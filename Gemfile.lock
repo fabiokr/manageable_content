@@ -51,7 +51,6 @@ GEM
       guard (>= 0.4.0)
     hike (1.2.0)
     i18n (0.6.0)
-    libnotify (0.5.7)
     mail (2.3.0)
       i18n (>= 0.4.0)
       mime-types (~> 1.16)
@@ -118,7 +117,6 @@ DEPENDENCIES
   database_cleaner
   guard-bundler
   guard-rspec
-  libnotify
   manageable_content!
   rspec-rails (~> 2.5)
   shoulda-matchers
