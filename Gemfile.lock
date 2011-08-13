@@ -1,3 +1,9 @@
+PATH
+  remote: .
+  specs:
+    manageable_content (0.0.1)
+      rails (~> 3.1.0.rc5)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -33,9 +39,18 @@ GEM
     arel (2.1.4)
     bcrypt-ruby (2.1.4)
     builder (3.0.0)
+    diff-lcs (1.1.2)
     erubis (2.7.0)
+    guard (0.5.1)
+      thor (~> 0.14.6)
+    guard-bundler (0.1.3)
+      bundler (>= 1.0.0)
+      guard (>= 0.2.2)
+    guard-rspec (0.4.1)
+      guard (>= 0.4.0)
     hike (1.2.0)
     i18n (0.6.0)
+    libnotify (0.5.7)
     mail (2.3.0)
       i18n (>= 0.4.0)
       mime-types (~> 1.16)
@@ -69,6 +84,20 @@ GEM
       thor (~> 0.14.6)
     rake (0.9.2)
     rdoc (3.9.2)
+    rspec (2.6.0)
+      rspec-core (~> 2.6.0)
+      rspec-expectations (~> 2.6.0)
+      rspec-mocks (~> 2.6.0)
+    rspec-core (2.6.4)
+    rspec-expectations (2.6.0)
+      diff-lcs (~> 1.1.2)
+    rspec-mocks (2.6.0)
+    rspec-rails (2.6.1)
+      actionpack (~> 3.0)
+      activesupport (~> 3.0)
+      railties (~> 3.0)
+      rspec (~> 2.6.0)
+    shoulda-matchers (1.0.0.beta3)
     sprockets (2.0.0.beta.13)
       hike (~> 1.2)
       rack (~> 1.0)
@@ -85,5 +114,10 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  rails (= 3.1.0.rc5)
+  guard-bundler
+  guard-rspec
+  libnotify
+  manageable_content!
+  rspec-rails (~> 2.5)
+  shoulda-matchers
   sqlite3
