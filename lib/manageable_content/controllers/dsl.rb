@@ -20,11 +20,7 @@ module ManageableContent
         # manageable content keys for the Controller.
         #
         def manageable_content_for(*keys)
-          unless keys.empty?
-            self.manageable_content_keys = keys
-          end
-
-          self.manageable_content_keys || []
+          manageable_content :manageable_content_keys, keys
         end
 
         # Configures the manageable contents that will be shared between all Controllers.
@@ -37,12 +33,18 @@ module ManageableContent
         # manageable layout content keys.
         #
         def manageable_layout_content_for(*keys)
-          unless keys.empty?
-            self.manageable_layout_content_keys = keys
-          end
-
-          self.manageable_layout_content_keys || []
+          manageable_content :manageable_layout_content_keys, keys
         end
+
+        private
+
+          def manageable_content(attribute, keys)
+            unless keys.empty?
+              self.send("#{attribute}=", keys)
+            end
+
+            self.send(attribute) || []
+          end
       end
     end
   end
