@@ -5,6 +5,7 @@ module ManageableContent
 
       included do
         class_attribute :manageable_content_keys
+        mattr_accessor  :manageable_layout_content_keys
       end
 
       module ClassMethods
@@ -16,7 +17,7 @@ module ManageableContent
         #   manageable_content_for :body, :side
         #
         # This can also be called without parameters, in which case this will return the current 
-        # manageable contents for the Controller.
+        # manageable content keys for the Controller.
         #
         def manageable_content_for(*keys)
           unless keys.empty?
@@ -26,6 +27,22 @@ module ManageableContent
           self.manageable_content_keys || []
         end
 
+        # Configures the manageable contents that will be shared between all Controllers.
+        # For example, if all Controllers will share a 'footer_message' and a 'footer_copyright' 
+        # contents, the following should be set on a high level Controller (e.g. ApplicationController):
+        #
+        #   manageable_layout_content_for :footer_message, :footer_copyright
+        #
+        # This can also be called without parameters, in which case this will return the current 
+        # manageable layout content keys.
+        #
+        def manageable_layout_content_for(*keys)
+          unless keys.empty?
+            self.manageable_layout_content_keys = keys
+          end
+
+          self.manageable_layout_content_keys || []
+        end
       end
     end
   end
