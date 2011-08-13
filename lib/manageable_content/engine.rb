@@ -1,3 +1,5 @@
+require 'manageable_content/controllers/dsl'
+
 module ManageableContent
 
   def self.table_name_prefix
