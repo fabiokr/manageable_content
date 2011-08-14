@@ -3,18 +3,24 @@ require 'spec_helper'
 describe "The Controller Dsl" do
 
   context "class methods" do
-    context "manageable_content_for" do
-      it "should configure the content keys for the HomeController" do
-        HomeController.manageable_content_for.should == [:body, :side]
-      end
-      it "should configure the content keys for the ContactController" do
-        ContactController.manageable_content_for.should == [:body, :message]
-      end
-    end
-
     context "manageable_layout_content_for" do
       it "should configure the layout content keys for the ApplicationController" do
         ApplicationController.manageable_layout_content_for.should == [:footer_copyright, :footer_contact]
+      end
+    end
+
+    context "manageable_default_content_for" do
+      it "should configure the default content keys for all Controllers" do
+        ApplicationController.manageable_default_content_for.should == [:title, :keywords]
+      end
+    end
+
+    context "manageable_content_for" do
+      it "should configure the content keys for the HomeController including defaults" do
+        HomeController.manageable_content_for.should == [:title, :keywords, :body, :side]
+      end
+      it "should configure the content keys for the ContactController including defaults" do
+        ContactController.manageable_content_for.should == [:title, :keywords, :body, :message]
       end
     end
   end

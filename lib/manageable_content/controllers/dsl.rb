@@ -4,26 +4,13 @@ module ManageableContent
       extend ActiveSupport::Concern
 
       included do
+        mattr_accessor  :manageable_layout_content_keys, :manageable_default_content_keys
         class_attribute :manageable_content_keys
-        mattr_accessor  :manageable_layout_content_keys
 
         helper_method :manageable_content_for
       end
 
       module ClassMethods
-
-        # Configures the manageable contents for a Controller.
-        # For example, if the Controller will have a 'body' and a 'side' contents,
-        # the following should be set:
-        #
-        #   manageable_content_for :body, :side
-        #
-        # This can also be called without parameters, in which case this will return the current 
-        # manageable content keys for the Controller.
-        #
-        def manageable_content_for(*keys)
-          manageable_content :manageable_content_keys, keys
-        end
 
         # Configures the manageable contents that will be shared between all Controllers.
         # For example, if all Controllers will share a 'footer_message' and a 'footer_copyright' 
@@ -38,9 +25,35 @@ module ManageableContent
           manageable_content :manageable_layout_content_keys, keys
         end
 
+        # Configures default content keys for all Controllers.
+        # For example, if all Controllers will have a 'title' and a 'keywords' contents,
+        # the following should be set:
+        #
+        #   manageable_default_content_for :title, :keywords
+        #
+        # This can also be called without parameters, in which case this will return the current 
+        # manageable default content keys.
+        #
+        def manageable_default_content_for(*keys)
+          manageable_content :manageable_default_content_keys, keys
+        end
+
+        # Configures the manageable contents for a Controller.
+        # For example, if the Controller will have a 'body' and a 'side' contents,
+        # the following should be set:
+        #
+        #   manageable_content_for :body, :side
+        #
+        # This can also be called without parameters, in which case this will return the current 
+        # manageable content keys for the Controller (plus default content keys).
+        #
+        def manageable_content_for(*keys)
+          manageable_content(:manageable_default_content_keys) + manageable_content(:manageable_content_keys, keys)
+        end
+
         private
 
-          def manageable_content(attribute, keys)
+          def manageable_content(attribute, keys = [])
             unless keys.empty?
               self.send("#{attribute}=", keys)
             end
