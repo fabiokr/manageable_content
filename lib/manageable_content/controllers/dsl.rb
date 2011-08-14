@@ -60,8 +60,9 @@ module ManageableContent
           @layout_page ||= ManageableContent::Page.for_key(nil)
           @page        ||= ManageableContent::Page.for_key(controller_path)
 
-          page_content = @layout_page.content_for_key(key) || @page.content_for_key(key)
-          page_content.try(:content).try(:html_safe)
+          (@layout_page.try(:content_for_key, key) || @page.try(:content_for_key, key))
+            .try(:content)
+            .try(:html_safe)
         end
       end
     end

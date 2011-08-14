@@ -73,6 +73,9 @@ describe "The Controller Dsl" do
         @contact_message_content.key     = "message"
         @contact_message_content.content = "The side content"
         @contact_message_content.save!
+
+        # BlogController
+        @blog_controller = BlogController.new
       end
 
       context "manageable_content_for helper" do
@@ -103,6 +106,12 @@ describe "The Controller Dsl" do
           end
           it "should retrieve the correct content for :footer_contact" do
             @contact_controller.manageable_content_for(:footer_contact).should == @layout_footer_contact_content.content
+          end
+        end
+
+        context "BlogController" do
+          it "should retrieve nil for a non existent page content" do
+            @blog_controller.manageable_content_for(:non_existent).should be_nil
           end
         end
       end
