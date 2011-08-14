@@ -50,12 +50,18 @@ module ManageableContent
       end
 
       module InstanceMethods
+
+        # Retrieves the content for the current page with a given key.
+        # This will first look for a PageContent with the given key within
+        # the layout page contents, and if none is found, it will look
+        # within the page contents for the current controller.
+        #
         def manageable_content_for(key)
-          @page ||= ManageableContent::Page.for_key(controller_path)
-          
-          key          = key.to_s
-          page_content = @page.page_contents.detect { |page_content| page_content.key == key }
-          page_content.nil? || page_content.content.nil? ? nil : page_content.content.html_safe
+          @layout_page ||= ManageableContent::Page.for_key(nil)
+          @page        ||= ManageableContent::Page.for_key(controller_path)
+
+          page_content = @layout_page.content_for_key(key) || @page.content_for_key(key)
+          page_content.try(:content).try(:html_safe)
         end
       end
     end

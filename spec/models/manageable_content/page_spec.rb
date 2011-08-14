@@ -32,10 +32,19 @@ describe ManageableContent::Page do
       @page.key    = 'the/example'
       @page.locale = I18n.locale
       @page.save!
+
+      @page_content         = @page.page_contents.build
+      @page_content.key     = 'mycontent'
+      @page_content.content = 'My content'
+      @page_content.save!
     end
 
     it "should retrieve correct page with :for_key" do
       ManageableContent::Page.for_key('the/example').should == @page
+    end
+
+    it "should retrieve correct content with :content_for_key" do
+      @page.content_for_key(:mycontent).should == @page_content
     end
   end
 end

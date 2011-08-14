@@ -22,6 +22,22 @@ describe "The Controller Dsl" do
   context "instance methods" do
     context "for controller instances with configured pages" do
       before :each do
+        # Layout Contents
+        @layout_page        = ManageableContent::Page.new
+        @layout_page.key    = nil
+        @layout_page.locale = I18n.locale
+        @layout_page.save!
+
+        @layout_footer_copyright_content         = @layout_page.page_contents.build
+        @layout_footer_copyright_content.key     = "footer_copyright"
+        @layout_footer_copyright_content.content = "The footer copyright content"
+        @layout_footer_copyright_content.save!
+
+        @layout_footer_contact_content         = @layout_page.page_contents.build
+        @layout_footer_contact_content.key     = "footer_contact"
+        @layout_footer_contact_content.content = "The footer contact content"
+        @layout_footer_contact_content.save!
+
         # HomeController
         @home_controller = HomeController.new
 
@@ -67,6 +83,12 @@ describe "The Controller Dsl" do
           it "should retrieve the correct content for :side" do
             @home_controller.manageable_content_for(:side).should == @home_side_content.content
           end
+          it "should retrieve the correct content for :footer_copyright" do
+            @home_controller.manageable_content_for(:footer_copyright).should == @layout_footer_copyright_content.content
+          end
+          it "should retrieve the correct content for :footer_contact" do
+            @home_controller.manageable_content_for(:footer_contact).should == @layout_footer_contact_content.content
+          end
         end
 
         context "ContactController" do
@@ -75,6 +97,12 @@ describe "The Controller Dsl" do
           end
           it "should retrieve the correct content for :message" do
             @contact_controller.manageable_content_for(:message).should == @contact_message_content.content
+          end
+          it "should retrieve the correct content for :footer_copyright" do
+            @contact_controller.manageable_content_for(:footer_copyright).should == @layout_footer_copyright_content.content
+          end
+          it "should retrieve the correct content for :footer_contact" do
+            @contact_controller.manageable_content_for(:footer_contact).should == @layout_footer_contact_content.content
           end
         end
       end
