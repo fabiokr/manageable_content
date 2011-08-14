@@ -6,6 +6,8 @@ module ManageableContent
       included do
         class_attribute :manageable_content_keys
         mattr_accessor  :manageable_layout_content_keys
+
+        helper_method :manageable_content_for
       end
 
       module ClassMethods
@@ -45,6 +47,16 @@ module ManageableContent
 
             self.send(attribute) || []
           end
+      end
+
+      module InstanceMethods
+        def manageable_content_for(key)
+          @page ||= ManageableContent::Page.for_key(controller_path)
+          
+          key          = key.to_s
+          page_content = @page.page_contents.detect { |page_content| page_content.key == key }
+          page_content.nil? || page_content.content.nil? ? nil : page_content.content.html_safe
+        end
       end
     end
   end
