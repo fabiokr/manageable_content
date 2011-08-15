@@ -6,12 +6,16 @@ module ManageableContent
       # and the layout Page for manageable layout content keys.
       #
       def self.generate!
-        # layout page
-        self.generate_page! nil, I18n.locale, ManageableContent::Controllers::Dsl.manageable_layout_content_keys
+        controllers = eligible_controllers
 
-        # controllers pages
-        controllers_list.each do |controller_class|
-          self.generate_page! controller_class.controller_path, I18n.locale, controller_class.manageable_content_for
+        # layout page
+        Engine.config.locales.each do |locale|
+          self.generate_page! nil, locale, ManageableContent::Controllers::Dsl.manageable_layout_content_keys
+
+          # controllers pages
+          controllers.each do |controller_class|
+            self.generate_page! controller_class.controller_path, locale, controller_class.manageable_content_for
+          end
         end
       end
 
@@ -20,7 +24,7 @@ module ManageableContent
         # Retrieves a list of Controllers eligible for having manageable content.
         # A Controller is eligible if it responds to the :manageable_content_for method.
         #
-        def self.controllers_list
+        def self.eligible_controllers
           Rails.configuration.paths["app/controllers"].expanded.inject([]) do |controllers, dir|
             controllers += Dir["#{dir}/**/*_controller.rb"].map do |file| 
               file.gsub("#{dir}/", "")
@@ -38,7 +42,7 @@ module ManageableContent
             locale '#{locale}' and keys [#{content_keys.join(',')}]"
 
           Page.transaction do
-            page = Page.for_key(key) || Page.new
+            page = Page.for_key(key, locale) || Page.new
 
             if page.new_record?
               page.key    = key
