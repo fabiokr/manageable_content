@@ -3,7 +3,10 @@ module ManageableContent
     module Dsl
       extend ActiveSupport::Concern
         
-      mattr_accessor :manageable_layout_content_keys, :manageable_default_content_keys
+      mattr_accessor :manageable_ignore_controller_namespace_keys,
+                     :manageable_layout_content_keys, 
+                     :manageable_default_content_keys
+                     
       self.manageable_layout_content_keys, self.manageable_default_content_keys = [], []
 
       included do
@@ -14,6 +17,18 @@ module ManageableContent
       end
 
       module ClassMethods
+
+        # Configures the manageable contents that will be shared between all Controllers.
+        # For example, if all Controllers will share a 'footer_message' and a 'footer_copyright' 
+        # contents, the following should be set on a high level Controller (e.g. ApplicationController):
+        #
+        #   manageable_layout_content_for :footer_message, :footer_copyright
+        #
+        def manageable_ignore_controller_namespaces(*keys)
+          unless keys.empty?
+            Dsl.manageable_ignore_controller_namespace_keys = keys.uniq
+          end
+        end
 
         # Configures the manageable contents that will be shared between all Controllers.
         # For example, if all Controllers will share a 'footer_message' and a 'footer_copyright' 

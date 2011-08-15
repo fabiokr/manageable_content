@@ -73,9 +73,20 @@ describe ManageableContent::Controllers::Generator do
             page.page_content_for_key(:keywords).should_not be_nil
           end
         end
+
+        context "ignored namespaces" do
+          context "Admin::HomeController" do
+            it "should NOT have generated contents for each configured locale" do
+              controller_path = Admin::HomeController.controller_path
+
+              ManageableContent::Engine.config.locales.each do |locale|
+                ManageableContent::Page.for_key(controller_path, locale).should be_nil
+              end
+            end
+          end
+        end
       end
 
-      it "should be possible to ignore namespaces"
       it "should be possible to have manageable content for different layouts"
     end
 

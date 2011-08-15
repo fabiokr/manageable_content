@@ -10,7 +10,7 @@ module ManageableContent
 
         # layout page
         Engine.config.locales.each do |locale|
-          self.generate_page! nil, locale, ManageableContent::Controllers::Dsl.manageable_layout_content_keys
+          self.generate_page! nil, locale, Dsl.manageable_layout_content_keys
 
           # controllers pages
           controllers.each do |controller_class|
@@ -22,7 +22,8 @@ module ManageableContent
       protected
 
         # Retrieves a list of Controllers eligible for having manageable content.
-        # A Controller is eligible if it responds to the :manageable_content_for method.
+        # A Controller is eligible if it responds to the :manageable_content_for method
+        # and does not start with an ignored namespace.
         #
         def self.eligible_controllers
           Rails.configuration.paths["app/controllers"].expanded.inject([]) do |controllers, dir|
@@ -32,7 +33,14 @@ module ManageableContent
                   .camelize
                   .constantize
             end
-          end.uniq.select{ |controller_class| controller_class.respond_to?(:manageable_content_for) }
+          end
+             .uniq
+             .select{ |controller_class| controller_class.respond_to?(:manageable_content_for) }
+             .select do |controller_class| 
+               !Dsl.manageable_ignore_controller_namespace_keys.detect do |ignored_namespace|
+                controller_class.controller_path.start_with? ignored_namespace.to_s
+              end
+            end
         end
 
         # Generates a Page and PageContent for the given key, locale and content keys.
