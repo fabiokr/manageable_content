@@ -2,10 +2,13 @@ module ManageableContent
   module Controllers
     module Dsl
       extend ActiveSupport::Concern
+        
+      mattr_accessor :manageable_layout_content_keys, :manageable_default_content_keys
+      self.manageable_layout_content_keys, self.manageable_default_content_keys = [], []
 
       included do
-        mattr_accessor  :manageable_layout_content_keys, :manageable_default_content_keys
         class_attribute :manageable_content_keys
+        self.manageable_content_keys = []
 
         helper_method :manageable_content_for
       end
@@ -18,11 +21,10 @@ module ManageableContent
         #
         #   manageable_layout_content_for :footer_message, :footer_copyright
         #
-        # This can also be called without parameters, in which case this will return the current 
-        # manageable layout content keys.
-        #
         def manageable_layout_content_for(*keys)
-          manageable_content :manageable_layout_content_keys, keys
+          unless keys.empty?
+            Dsl.manageable_layout_content_keys = keys.uniq
+          end
         end
 
         # Configures default content keys for all Controllers.
@@ -31,11 +33,10 @@ module ManageableContent
         #
         #   manageable_default_content_for :title, :keywords
         #
-        # This can also be called without parameters, in which case this will return the current 
-        # manageable default content keys.
-        #
         def manageable_default_content_for(*keys)
-          manageable_content :manageable_default_content_keys, keys
+          unless keys.empty?
+            Dsl.manageable_default_content_keys = keys.uniq
+          end
         end
 
         # Configures the manageable contents for a Controller.
@@ -48,20 +49,14 @@ module ManageableContent
         # manageable content keys for the Controller (plus default content keys).
         #
         def manageable_content_for(*keys)
-          content_keys =  manageable_content(:manageable_default_content_keys)
-          content_keys += manageable_content(:manageable_content_keys, keys)
+          unless keys.empty?
+            self.manageable_content_keys = keys
+          end
+
+          content_keys =  Dsl.manageable_default_content_keys
+          content_keys += self.manageable_content_keys unless self.manageable_content_keys.empty?
           content_keys.uniq
         end
-
-        private
-
-          def manageable_content(attribute, keys = [])
-            unless keys.empty?
-              self.send("#{attribute}=", keys)
-            end
-
-            self.send(attribute).try(:uniq) || []
-          end
       end
 
       module InstanceMethods

@@ -26,64 +26,6 @@ describe ManageableContent::Page do
     it { should have_many(:page_contents) }
   end
 
-  context "class methods" do
-
-    context "generate!" do
-      before :each do
-        ManageableContent::Page.generate!
-      end
-
-      context "Layout" do
-        it "should generate contents" do
-          page = ManageableContent::Page.for_key(nil)
-
-          page.locale.should == I18n.locale.to_s
-          page.page_contents.size.should == 2
-          page.page_content_for_key(:footer_copyright).should_not be_nil
-          page.page_content_for_key(:footer_contact).should_not   be_nil
-        end
-      end
-
-      context "HomeController" do
-        it "should generate contents" do
-          page = ManageableContent::Page.for_key(HomeController.controller_path)
-
-          page.locale.should == I18n.locale.to_s
-          page.page_contents.size.should == 4
-          page.page_content_for_key(:title).should_not    be_nil
-          page.page_content_for_key(:keywords).should_not be_nil
-          page.page_content_for_key(:body).should_not     be_nil
-          page.page_content_for_key(:side).should_not     be_nil
-        end
-      end
-
-      context "ContactController" do
-        it "should generate contents" do
-          page = ManageableContent::Page.for_key(ContactController.controller_path)
-
-          page.locale.should == I18n.locale.to_s
-          page.page_contents.size.should == 4
-          page.page_content_for_key(:title).should_not    be_nil
-          page.page_content_for_key(:keywords).should_not be_nil
-          page.page_content_for_key(:body).should_not     be_nil
-          page.page_content_for_key(:message).should_not  be_nil
-        end
-      end
-
-      context "BlogController" do
-        it "should generate contents" do
-          page = ManageableContent::Page.for_key(BlogController.controller_path)
-
-          page.locale.should == I18n.locale.to_s
-          page.page_contents.size.should == 2
-          page.page_content_for_key(:title).should_not    be_nil
-          page.page_content_for_key(:keywords).should_not be_nil
-        end
-      end
-    end
-
-  end
-
   context "instance methods" do
     before :each do
       @page        = ManageableContent::Page.new

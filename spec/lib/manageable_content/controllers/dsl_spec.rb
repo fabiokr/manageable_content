@@ -5,13 +5,13 @@ describe "The Controller Dsl" do
   context "class methods" do
     context "manageable_layout_content_for" do
       it "should configure the layout content keys for the ApplicationController" do
-        ApplicationController.manageable_layout_content_for.should == [:footer_copyright, :footer_contact]
+        ManageableContent::Controllers::Dsl.manageable_layout_content_keys.should == [:footer_copyright, :footer_contact]
       end
     end
 
     context "manageable_default_content_for" do
       it "should configure the default content keys for all Controllers" do
-        ApplicationController.manageable_default_content_for.should == [:title, :keywords]
+        ManageableContent::Controllers::Dsl.manageable_default_content_keys.should == [:title, :keywords]
       end
     end
 
@@ -80,8 +80,8 @@ describe "The Controller Dsl" do
         @contact_message_content.content = "The side content"
         @contact_message_content.save!
 
-        # BlogController
-        @blog_controller = BlogController.new
+        # Blogs::HomeController
+        @blogs_home_controller = Blogs::HomeController.new
       end
 
       context "manageable_content_for helper" do
@@ -117,7 +117,7 @@ describe "The Controller Dsl" do
 
         context "BlogController" do
           it "should retrieve nil for a non existent page content" do
-            @blog_controller.manageable_content_for(:non_existent).should be_nil
+            @blogs_home_controller.manageable_content_for(:non_existent).should be_nil
           end
         end
       end
