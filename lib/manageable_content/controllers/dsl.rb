@@ -48,7 +48,9 @@ module ManageableContent
         # manageable content keys for the Controller (plus default content keys).
         #
         def manageable_content_for(*keys)
-          manageable_content(:manageable_default_content_keys) + manageable_content(:manageable_content_keys, keys)
+          content_keys =  manageable_content(:manageable_default_content_keys)
+          content_keys += manageable_content(:manageable_content_keys, keys)
+          content_keys.uniq
         end
 
         private
@@ -58,7 +60,7 @@ module ManageableContent
               self.send("#{attribute}=", keys)
             end
 
-            self.send(attribute) || []
+            self.send(attribute).try(:uniq) || []
           end
       end
 
@@ -73,7 +75,7 @@ module ManageableContent
           @layout_page ||= ManageableContent::Page.for_key(nil)
           @page        ||= ManageableContent::Page.for_key(controller_path)
 
-          (@layout_page.try(:content_for_key, key) || @page.try(:content_for_key, key))
+          (@layout_page.try(:page_content_for_key, key) || @page.try(:page_content_for_key, key))
             .try(:content)
             .try(:html_safe)
         end
