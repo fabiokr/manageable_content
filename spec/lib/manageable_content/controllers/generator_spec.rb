@@ -26,17 +26,17 @@ describe ManageableContent::Controllers::Generator do
           end
         end
 
-        context "register" do
+        context "blog/application" do
           it "should have generated contents for each configured locale" do
             ManageableContent::Engine.config.locales.each do |locale|
-              page = ManageableContent::Page.for_key('register', locale)
+              page = ManageableContent::Page.for_key('blog/application', locale)
 
-              page.key.should    == 'register'
+              page.key.should    == 'blog/application'
               page.locale.should == locale.to_s
               page.page_contents.size.should == 3
               page.page_content_for_key(:title).should_not be_nil
               page.page_content_for_key(:keywords).should_not be_nil
-              page.page_content_for_key(:register_text).should_not be_nil
+              page.page_content_for_key(:blog_title).should_not be_nil
             end
           end
         end
@@ -78,9 +78,9 @@ describe ManageableContent::Controllers::Generator do
         end
       end
 
-      context "Blogs::HomeController" do
+      context "Blog::HomeController" do
         it "should have generated contents for each configured locale" do
-          controller_path = Blogs::HomeController.controller_path
+          controller_path = Blog::HomeController.controller_path
 
           ManageableContent::Engine.config.locales.each do |locale|
             page = ManageableContent::Page.for_key(controller_path, locale)

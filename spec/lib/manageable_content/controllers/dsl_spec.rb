@@ -14,8 +14,8 @@ describe "The Controller Dsl" do
         ManageableContent::Controllers::Dsl.manageable_layout_content_keys['application'].should == 
           [:footer_copyright, :footer_contact]
 
-        ManageableContent::Controllers::Dsl.manageable_layout_content_keys['register'].should == 
-          [:register_text]
+        ManageableContent::Controllers::Dsl.manageable_layout_content_keys['blog/application'].should == 
+          [:blog_title]
       end
     end
 
@@ -54,16 +54,16 @@ describe "The Controller Dsl" do
         @application_layout_footer_contact_content.content = "The footer contact content"
         @application_layout_footer_contact_content.save!
 
-        # Register Layout Contents
-        @register_layout_page        = ManageableContent::Page.new
-        @register_layout_page.key    = 'register'
-        @register_layout_page.locale = I18n.locale
-        @register_layout_page.save!
+        # Blog Layout Contents
+        @blog_layout_page        = ManageableContent::Page.new
+        @blog_layout_page.key    = 'blog/application'
+        @blog_layout_page.locale = I18n.locale
+        @blog_layout_page.save!
 
-        @register_layout_text_content         = @register_layout_page.page_contents.build
-        @register_layout_text_content.key     = "register_text"
-        @register_layout_text_content.content = "The register text content"
-        @register_layout_text_content.save!
+        @blog_layout_title_content         = @blog_layout_page.page_contents.build
+        @blog_layout_title_content.key     = "blog_title"
+        @blog_layout_title_content.content = "The blog title content"
+        @blog_layout_title_content.save!
 
         # HomeController
         @home_controller = HomeController.new
@@ -101,8 +101,8 @@ describe "The Controller Dsl" do
         @contact_message_content.content = "The side content"
         @contact_message_content.save!
 
-        # Blogs::HomeController
-        @blogs_home_controller = Blogs::HomeController.new
+        # Blog::HomeController
+        @blogs_home_controller = Blog::HomeController.new
       end
 
       context "manageable_content_for helper" do
@@ -142,10 +142,10 @@ describe "The Controller Dsl" do
           end
         end
 
-        context "with custom register layout" do
+        context "with custom blog layout" do
           before :each do
-            HomeController.layout     'register'
-            ContactController.layout  'register'
+            HomeController.layout     'blog/application'
+            ContactController.layout  'blog/application'
           end
 
           context "HomeController" do
@@ -155,9 +155,9 @@ describe "The Controller Dsl" do
             it "should retrieve the correct content for :side" do
               @home_controller.manageable_content_for(:side).should == @home_side_content.content
             end
-            it "should retrieve the correct content for :register_text" do
-              @home_controller.manageable_content_for(:register_text).should == 
-                @register_layout_text_content.content
+            it "should retrieve the correct content for :blog_title" do
+              @home_controller.manageable_content_for(:blog_title).should == 
+                @blog_layout_title_content.content
             end
           end
 
@@ -168,9 +168,9 @@ describe "The Controller Dsl" do
             it "should retrieve the correct content for :message" do
               @contact_controller.manageable_content_for(:message).should == @contact_message_content.content
             end
-            it "should retrieve the correct content for :register_text" do
-              @home_controller.manageable_content_for(:register_text).should == 
-                @register_layout_text_content.content
+            it "should retrieve the correct content for :blog_title" do
+              @home_controller.manageable_content_for(:blog_title).should == 
+                @blog_layout_title_content.content
             end
           end
         end
