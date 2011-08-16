@@ -64,10 +64,14 @@ describe "The Controller Dsl" do
 
         # Blog::HomeController
         @blogs_home_controller = Blog::HomeController.new
+        @blog_page = create(:page, :key => @blogs_home_controller.controller_path, :locale => I18n.locale)
+
+        # Admin::HomeController
+        @admin_home_controller = Admin::HomeController.new
       end
 
       context "manageable_content_for helper" do
-        context "with default application layout" do
+        context "with application layout" do
           context "HomeController" do
             it "should retrieve the correct content for :body" do
               @home_controller.manageable_content_for(:body).should == @home_body_content.content
@@ -76,61 +80,39 @@ describe "The Controller Dsl" do
               @home_controller.manageable_content_for(:side).should == @home_side_content.content
             end
             it "should retrieve the correct content for :footer_copyright" do
-              @home_controller.manageable_content_for(:footer_copyright).should == 
+              @home_controller.manageable_layout_content_for(:footer_copyright).should == 
                 @application_layout_footer_copyright_content.content
             end
             it "should retrieve the correct content for :footer_contact" do
-              @home_controller.manageable_content_for(:footer_contact).should == 
+              @home_controller.manageable_layout_content_for(:footer_contact).should == 
                 @application_layout_footer_contact_content.content
             end
           end
 
           context "ContactController" do
             it "should retrieve the correct content for :body" do
-              @contact_controller.manageable_content_for(:body).should == @contact_body_content.content
+              @contact_controller.manageable_content_for(:body).should == 
+                @contact_body_content.content
             end
             it "should retrieve the correct content for :message" do
-              @contact_controller.manageable_content_for(:message).should == @contact_message_content.content
+              @contact_controller.manageable_content_for(:message).should == 
+                @contact_message_content.content
             end
             it "should retrieve the correct content for :footer_copyright" do
-              @contact_controller.manageable_content_for(:footer_copyright).should ==
+              @contact_controller.manageable_layout_content_for(:footer_copyright).should ==
                 @application_layout_footer_copyright_content.content
             end
             it "should retrieve the correct content for :footer_contact" do
-              @contact_controller.manageable_content_for(:footer_contact).should == 
+              @contact_controller.manageable_layout_content_for(:footer_contact).should == 
                 @application_layout_footer_contact_content.content
             end
           end
         end
 
-        context "with custom blog layout" do
-          before :each do
-            HomeController.layout     'blog/application'
-            ContactController.layout  'blog/application'
-          end
-
-          context "HomeController" do
-            it "should retrieve the correct content for :body" do
-              @home_controller.manageable_content_for(:body).should == @home_body_content.content
-            end
-            it "should retrieve the correct content for :side" do
-              @home_controller.manageable_content_for(:side).should == @home_side_content.content
-            end
+        context "with blog layout" do
+          context "Blog::HomeController" do
             it "should retrieve the correct content for :blog_title" do
-              @home_controller.manageable_content_for(:blog_title).should == 
-                @blog_layout_title_content.content
-            end
-          end
-
-          context "ContactController" do
-            it "should retrieve the correct content for :body" do
-              @contact_controller.manageable_content_for(:body).should == @contact_body_content.content
-            end
-            it "should retrieve the correct content for :message" do
-              @contact_controller.manageable_content_for(:message).should == @contact_message_content.content
-            end
-            it "should retrieve the correct content for :blog_title" do
-              @home_controller.manageable_content_for(:blog_title).should == 
+              @blogs_home_controller.manageable_layout_content_for(:blog_title).should == 
                 @blog_layout_title_content.content
             end
           end
@@ -138,7 +120,7 @@ describe "The Controller Dsl" do
 
         context "BlogController" do
           it "should retrieve nil for a non existent page content" do
-            @blogs_home_controller.manageable_content_for(:non_existent).should be_nil
+            @admin_home_controller.manageable_content_for(:non_existent).should be_nil
           end
         end
       end
