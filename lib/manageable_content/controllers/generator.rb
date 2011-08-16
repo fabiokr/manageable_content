@@ -8,13 +8,21 @@ module ManageableContent
       def self.generate!
         controllers = eligible_controllers
 
-        # layout page
         Engine.config.locales.each do |locale|
-          self.generate_page! nil, locale, Dsl.manageable_layout_content_keys
+          # layout page
+          Dsl.manageable_layout_content_keys.each_key do |layout|
+            self.generate_page! layout, 
+                                locale, 
+                                (Dsl.manageable_default_content_keys + 
+                                  Dsl.manageable_layout_content_keys[layout]).uniq
+          end
 
           # controllers pages
           controllers.each do |controller_class|
-            self.generate_page! controller_class.controller_path, locale, controller_class.manageable_content_for
+            self.generate_page! controller_class.controller_path, 
+                                locale, 
+                                (Dsl.manageable_default_content_keys + 
+                                  controller_class.manageable_content_keys).uniq
           end
         end
       end

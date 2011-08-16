@@ -10,15 +10,34 @@ describe ManageableContent::Controllers::Generator do
       end
 
       context "Layout" do
-        it "should have generated contents for each configured locale" do
-          ManageableContent::Engine.config.locales.each do |locale|
-            page = ManageableContent::Page.for_key(nil, locale)
+        context "application" do
+          it "should have generated contents for each configured locale" do
+            ManageableContent::Engine.config.locales.each do |locale|
+              page = ManageableContent::Page.for_key('application', locale)
 
-            page.key.should be_nil
-            page.locale.should == locale.to_s
-            page.page_contents.size.should == 2
-            page.page_content_for_key(:footer_copyright).should_not be_nil
-            page.page_content_for_key(:footer_contact).should_not   be_nil
+              page.key.should    == 'application'
+              page.locale.should == locale.to_s
+              page.page_contents.size.should == 4
+              page.page_content_for_key(:title).should_not be_nil
+              page.page_content_for_key(:keywords).should_not be_nil
+              page.page_content_for_key(:footer_copyright).should_not be_nil
+              page.page_content_for_key(:footer_contact).should_not   be_nil
+            end
+          end
+        end
+
+        context "register" do
+          it "should have generated contents for each configured locale" do
+            ManageableContent::Engine.config.locales.each do |locale|
+              page = ManageableContent::Page.for_key('register', locale)
+
+              page.key.should    == 'register'
+              page.locale.should == locale.to_s
+              page.page_contents.size.should == 3
+              page.page_content_for_key(:title).should_not be_nil
+              page.page_content_for_key(:keywords).should_not be_nil
+              page.page_content_for_key(:register_text).should_not be_nil
+            end
           end
         end
       end
@@ -86,8 +105,6 @@ describe ManageableContent::Controllers::Generator do
           end
         end
       end
-
-      it "should be possible to have manageable content for different layouts"
     end
 
   end

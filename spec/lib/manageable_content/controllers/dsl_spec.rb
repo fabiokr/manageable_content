@@ -10,8 +10,12 @@ describe "The Controller Dsl" do
     end
 
     context "manageable_layout_content_for" do
-      it "should configure the layout content keys for the ApplicationController" do
-        ManageableContent::Controllers::Dsl.manageable_layout_content_keys.should == [:footer_copyright, :footer_contact]
+      it "should configure the layout content keys for layout" do
+        ManageableContent::Controllers::Dsl.manageable_layout_content_keys['application'].should == 
+          [:footer_copyright, :footer_contact]
+
+        ManageableContent::Controllers::Dsl.manageable_layout_content_keys['register'].should == 
+          [:register_text]
       end
     end
 
@@ -22,11 +26,11 @@ describe "The Controller Dsl" do
     end
 
     context "manageable_content_for" do
-      it "should configure the content keys for the HomeController including defaults" do
-        HomeController.manageable_content_for.should == [:title, :keywords, :body, :side]
+      it "should configure the content keys for the HomeController" do
+        HomeController.manageable_content_keys.should == [:body, :side]
       end
-      it "should configure the content keys for the ContactController including defaults" do
-        ContactController.manageable_content_for.should == [:title, :keywords, :body, :message]
+      it "should configure the content keys for the ContactController" do
+        ContactController.manageable_content_keys.should == [:body, :message]
       end
     end
   end
@@ -34,21 +38,32 @@ describe "The Controller Dsl" do
   context "instance methods" do
     context "for controller instances with configured pages" do
       before :each do
-        # Layout Contents
-        @layout_page        = ManageableContent::Page.new
-        @layout_page.key    = nil
-        @layout_page.locale = I18n.locale
-        @layout_page.save!
+        # Application Layout Contents
+        @application_layout_page        = ManageableContent::Page.new
+        @application_layout_page.key    = 'application'
+        @application_layout_page.locale = I18n.locale
+        @application_layout_page.save!
 
-        @layout_footer_copyright_content         = @layout_page.page_contents.build
-        @layout_footer_copyright_content.key     = "footer_copyright"
-        @layout_footer_copyright_content.content = "The footer copyright content"
-        @layout_footer_copyright_content.save!
+        @application_layout_footer_copyright_content         = @application_layout_page.page_contents.build
+        @application_layout_footer_copyright_content.key     = "footer_copyright"
+        @application_layout_footer_copyright_content.content = "The footer copyright content"
+        @application_layout_footer_copyright_content.save!
 
-        @layout_footer_contact_content         = @layout_page.page_contents.build
-        @layout_footer_contact_content.key     = "footer_contact"
-        @layout_footer_contact_content.content = "The footer contact content"
-        @layout_footer_contact_content.save!
+        @application_layout_footer_contact_content         = @application_layout_page.page_contents.build
+        @application_layout_footer_contact_content.key     = "footer_contact"
+        @application_layout_footer_contact_content.content = "The footer contact content"
+        @application_layout_footer_contact_content.save!
+
+        # Register Layout Contents
+        @register_layout_page        = ManageableContent::Page.new
+        @register_layout_page.key    = 'register'
+        @register_layout_page.locale = I18n.locale
+        @register_layout_page.save!
+
+        @register_layout_text_content         = @register_layout_page.page_contents.build
+        @register_layout_text_content.key     = "register_text"
+        @register_layout_text_content.content = "The register text content"
+        @register_layout_text_content.save!
 
         # HomeController
         @home_controller = HomeController.new
@@ -91,33 +106,72 @@ describe "The Controller Dsl" do
       end
 
       context "manageable_content_for helper" do
-        context "HomeController" do
-          it "should retrieve the correct content for :body" do
-            @home_controller.manageable_content_for(:body).should == @home_body_content.content
+        context "with default application layout" do
+          context "HomeController" do
+            it "should retrieve the correct content for :body" do
+              @home_controller.manageable_content_for(:body).should == @home_body_content.content
+            end
+            it "should retrieve the correct content for :side" do
+              @home_controller.manageable_content_for(:side).should == @home_side_content.content
+            end
+            it "should retrieve the correct content for :footer_copyright" do
+              @home_controller.manageable_content_for(:footer_copyright).should == 
+                @application_layout_footer_copyright_content.content
+            end
+            it "should retrieve the correct content for :footer_contact" do
+              @home_controller.manageable_content_for(:footer_contact).should == 
+                @application_layout_footer_contact_content.content
+            end
           end
-          it "should retrieve the correct content for :side" do
-            @home_controller.manageable_content_for(:side).should == @home_side_content.content
-          end
-          it "should retrieve the correct content for :footer_copyright" do
-            @home_controller.manageable_content_for(:footer_copyright).should == @layout_footer_copyright_content.content
-          end
-          it "should retrieve the correct content for :footer_contact" do
-            @home_controller.manageable_content_for(:footer_contact).should == @layout_footer_contact_content.content
+
+          context "ContactController" do
+            it "should retrieve the correct content for :body" do
+              @contact_controller.manageable_content_for(:body).should == @contact_body_content.content
+            end
+            it "should retrieve the correct content for :message" do
+              @contact_controller.manageable_content_for(:message).should == @contact_message_content.content
+            end
+            it "should retrieve the correct content for :footer_copyright" do
+              @contact_controller.manageable_content_for(:footer_copyright).should ==
+                @application_layout_footer_copyright_content.content
+            end
+            it "should retrieve the correct content for :footer_contact" do
+              @contact_controller.manageable_content_for(:footer_contact).should == 
+                @application_layout_footer_contact_content.content
+            end
           end
         end
 
-        context "ContactController" do
-          it "should retrieve the correct content for :body" do
-            @contact_controller.manageable_content_for(:body).should == @contact_body_content.content
+        context "with custom register layout" do
+          before :each do
+            HomeController.layout     'register'
+            ContactController.layout  'register'
           end
-          it "should retrieve the correct content for :message" do
-            @contact_controller.manageable_content_for(:message).should == @contact_message_content.content
+
+          context "HomeController" do
+            it "should retrieve the correct content for :body" do
+              @home_controller.manageable_content_for(:body).should == @home_body_content.content
+            end
+            it "should retrieve the correct content for :side" do
+              @home_controller.manageable_content_for(:side).should == @home_side_content.content
+            end
+            it "should retrieve the correct content for :register_text" do
+              @home_controller.manageable_content_for(:register_text).should == 
+                @register_layout_text_content.content
+            end
           end
-          it "should retrieve the correct content for :footer_copyright" do
-            @contact_controller.manageable_content_for(:footer_copyright).should == @layout_footer_copyright_content.content
-          end
-          it "should retrieve the correct content for :footer_contact" do
-            @contact_controller.manageable_content_for(:footer_contact).should == @layout_footer_contact_content.content
+
+          context "ContactController" do
+            it "should retrieve the correct content for :body" do
+              @contact_controller.manageable_content_for(:body).should == @contact_body_content.content
+            end
+            it "should retrieve the correct content for :message" do
+              @contact_controller.manageable_content_for(:message).should == @contact_message_content.content
+            end
+            it "should retrieve the correct content for :register_text" do
+              @home_controller.manageable_content_for(:register_text).should == 
+                @register_layout_text_content.content
+            end
           end
         end
 
