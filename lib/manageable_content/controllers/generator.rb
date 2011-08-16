@@ -58,7 +58,7 @@ module ManageableContent
             locale '#{locale}' and keys [#{content_keys.join(',')}]"
 
           Page.transaction do
-            page = Page.for_key(key, locale) || Page.new
+            page = Page.for_key(key, locale).first || Page.new
 
             if page.new_record?
               page.key    = key

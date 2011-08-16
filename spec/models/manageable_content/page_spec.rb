@@ -33,7 +33,7 @@ describe ManageableContent::Page do
     end
 
     it "should retrieve correct page with :for_key" do
-      ManageableContent::Page.for_key('the/example').should == @page
+      ManageableContent::Page.for_key('the/example').first.should == @page
     end
 
     it "should retrieve correct content with :page_content_for_key" do

@@ -6,7 +6,7 @@ describe "The demo application" do
       ManageableContent::Controllers::Generator.generate!
 
       # Application layout
-      page = ManageableContent::Page.for_key('application')
+      page = ManageableContent::Page.for_key('application').first
       page.page_content_for_key(:title)
         .update_attributes(:content => "Application Title Content")
       page.page_content_for_key(:keywords)
@@ -17,7 +17,7 @@ describe "The demo application" do
         .update_attributes(:content => "Application Footer Contact Content")
 
       # Blog layout
-      page = ManageableContent::Page.for_key('blog/application')
+      page = ManageableContent::Page.for_key('blog/application').first
       page.page_content_for_key(:title)
         .update_attributes(:content => "Blog Application Title Content")
       page.page_content_for_key(:keywords)
@@ -26,21 +26,21 @@ describe "The demo application" do
         .update_attributes(:content => "Blog Application Blog Title Content")
 
       # Home controller
-      page = ManageableContent::Page.for_key('home')
+      page = ManageableContent::Page.for_key('home').first
       page.page_content_for_key(:title).update_attributes(:content => "Home Title Content")
       page.page_content_for_key(:keywords).update_attributes(:content => "Home Keywords Content")
       page.page_content_for_key(:body).update_attributes(:content => "Home Body Content")
       page.page_content_for_key(:side).update_attributes(:content => "Home Side Content")
 
       # Contact controller
-      page = ManageableContent::Page.for_key('contact')
+      page = ManageableContent::Page.for_key('contact').first
       page.page_content_for_key(:title).update_attributes(:content => "Contact Title Content")
       page.page_content_for_key(:keywords).update_attributes(:content => "Contact Keywords Content")
       page.page_content_for_key(:body).update_attributes(:content => "Contact Body Content")
       page.page_content_for_key(:message).update_attributes(:content => "Contact Message Content")
 
       # Blog Home controller
-      page = ManageableContent::Page.for_key('blog/home')
+      page = ManageableContent::Page.for_key('blog/home').first
       page.page_content_for_key(:title).update_attributes(:content => "Blog Home Title Content")
       page.page_content_for_key(:keywords).update_attributes(:content => "Blog Home Keywords Content")
     end

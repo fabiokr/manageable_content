@@ -13,7 +13,7 @@ describe ManageableContent::Controllers::Generator do
         context "application" do
           it "should have generated contents for each configured locale" do
             ManageableContent::Engine.config.locales.each do |locale|
-              page = ManageableContent::Page.for_key('application', locale)
+              page = ManageableContent::Page.for_key('application', locale).first
 
               page.key.should    == 'application'
               page.locale.should == locale.to_s
@@ -29,7 +29,7 @@ describe ManageableContent::Controllers::Generator do
         context "blog/application" do
           it "should have generated contents for each configured locale" do
             ManageableContent::Engine.config.locales.each do |locale|
-              page = ManageableContent::Page.for_key('blog/application', locale)
+              page = ManageableContent::Page.for_key('blog/application', locale).first
 
               page.key.should    == 'blog/application'
               page.locale.should == locale.to_s
@@ -47,7 +47,7 @@ describe ManageableContent::Controllers::Generator do
           controller_path = HomeController.controller_path
 
           ManageableContent::Engine.config.locales.each do |locale|
-            page = ManageableContent::Page.for_key(controller_path, locale)
+            page = ManageableContent::Page.for_key(controller_path, locale).first
 
             page.key.should    == controller_path
             page.locale.should == locale.to_s
@@ -65,7 +65,7 @@ describe ManageableContent::Controllers::Generator do
           controller_path = ContactController.controller_path
 
           ManageableContent::Engine.config.locales.each do |locale|
-            page = ManageableContent::Page.for_key(controller_path, locale)
+            page = ManageableContent::Page.for_key(controller_path, locale).first
 
             page.key.should    == controller_path
             page.locale.should == locale.to_s
@@ -83,7 +83,7 @@ describe ManageableContent::Controllers::Generator do
           controller_path = Blog::HomeController.controller_path
 
           ManageableContent::Engine.config.locales.each do |locale|
-            page = ManageableContent::Page.for_key(controller_path, locale)
+            page = ManageableContent::Page.for_key(controller_path, locale).first
 
             page.key.should    == controller_path
             page.locale.should == locale.to_s
@@ -99,7 +99,7 @@ describe ManageableContent::Controllers::Generator do
               controller_path = Admin::HomeController.controller_path
 
               ManageableContent::Engine.config.locales.each do |locale|
-                ManageableContent::Page.for_key(controller_path, locale).should be_nil
+                ManageableContent::Page.for_key(controller_path, locale).first.should be_nil
               end
             end
           end

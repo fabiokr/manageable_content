@@ -13,7 +13,6 @@ class ManageableContent::Page < ActiveRecord::Base
       .joins(:page_contents)
       .where(:key => key)
       .where(:locale => locale)
-      .first
   end
 
   # Retrieves a PageContent with the given key.

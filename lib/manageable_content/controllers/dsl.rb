@@ -71,24 +71,25 @@ module ManageableContent
 
       module InstanceMethods
 
-        # Retrieves the content for the current page with a given key.
-        #
-        def manageable_content_for(key)
-          @page ||= ManageableContent::Page.for_key(controller_path)
-          manageable_content_for_page @page, key
-        end
-
         # Retrieves the content for the current layout with a given key.
         #
         def manageable_layout_content_for(key)
-          @layout_page ||= ManageableContent::Page.for_key(_layout)
-          manageable_content_for_page @layout_page, key
+          manageable_content_for_page :layout, key
+        end
+
+        # Retrieves the content for the current page with a given key.
+        #
+        def manageable_content_for(key)
+          manageable_content_for_page :controller, key
         end
 
         private
 
-          def manageable_content_for_page(page, key)
-            page.try(:page_content_for_key, key).try(:content).try(:html_safe)
+          def manageable_content_for_page(type, key)
+            @pages ||= ManageableContent::Page.for_key([_layout, controller_path]).all
+
+            subject = type == :layout ? @pages.try(:slice, 0) : @pages.try(:slice, 1)
+            subject.try(:page_content_for_key, key).try(:content).try(:html_safe)
           end
       end
     end
