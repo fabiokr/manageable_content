@@ -1,3 +1,6 @@
 = ManageableContent
 
 This project rocks and uses MIT-LICENSE.
+
+TODO Explain how to setup and use
+TODO Talk about multiple locale configuration

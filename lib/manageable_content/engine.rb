@@ -1,3 +1,6 @@
+require 'manageable_content/controllers/dsl'
+require 'manageable_content/controllers/generator'
+
 module ManageableContent
 
   def self.table_name_prefix

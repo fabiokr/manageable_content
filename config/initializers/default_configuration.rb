@@ -1,0 +1,1 @@
+ManageableContent::Engine.config.locales = [I18n.locale]
