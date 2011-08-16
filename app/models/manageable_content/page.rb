@@ -10,9 +10,9 @@ class ManageableContent::Page < ActiveRecord::Base
   #
   def self.for_key(key, locale = I18n.locale)
     includes(:page_contents)
+      .joins(:page_contents)
       .where(:key => key)
       .where(:locale => locale)
-      .first
   end
 
   # Retrieves a PageContent with the given key.

@@ -1,3 +1,4 @@
+require 'rails'
 require 'manageable_content/controllers/dsl'
 require 'manageable_content/controllers/generator'
 

@@ -28,19 +28,12 @@ describe ManageableContent::Page do
 
   context "instance methods" do
     before :each do
-      @page        = ManageableContent::Page.new
-      @page.key    = 'the/example'
-      @page.locale = I18n.locale
-      @page.save!
-
-      @page_content         = @page.page_contents.build
-      @page_content.key     = 'mycontent'
-      @page_content.content = 'My content'
-      @page_content.save!
+      @page         = create(:page, :key => 'the/example', :locale => I18n.locale)
+      @page_content = create(:page_content, :page => @page, :key => 'mycontent')
     end
 
     it "should retrieve correct page with :for_key" do
-      ManageableContent::Page.for_key('the/example').should == @page
+      ManageableContent::Page.for_key('the/example').first.should == @page
     end
 
     it "should retrieve correct content with :page_content_for_key" do
