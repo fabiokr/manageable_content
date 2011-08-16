@@ -39,67 +39,28 @@ describe "The Controller Dsl" do
     context "for controller instances with configured pages" do
       before :each do
         # Application Layout Contents
-        @application_layout_page        = ManageableContent::Page.new
-        @application_layout_page.key    = 'application'
-        @application_layout_page.locale = I18n.locale
-        @application_layout_page.save!
-
-        @application_layout_footer_copyright_content         = @application_layout_page.page_contents.build
-        @application_layout_footer_copyright_content.key     = "footer_copyright"
-        @application_layout_footer_copyright_content.content = "The footer copyright content"
-        @application_layout_footer_copyright_content.save!
-
-        @application_layout_footer_contact_content         = @application_layout_page.page_contents.build
-        @application_layout_footer_contact_content.key     = "footer_contact"
-        @application_layout_footer_contact_content.content = "The footer contact content"
-        @application_layout_footer_contact_content.save!
+        @application_layout_page = create(:page, :key => 'application', :locale => I18n.locale)
+        @application_layout_footer_copyright_content = create(:page_content, 
+          :page => @application_layout_page, :key => "footer_copyright")
+        @application_layout_footer_contact_content = create(:page_content, 
+          :page => @application_layout_page, :key => "footer_contact")
 
         # Blog Layout Contents
-        @blog_layout_page        = ManageableContent::Page.new
-        @blog_layout_page.key    = 'blog/application'
-        @blog_layout_page.locale = I18n.locale
-        @blog_layout_page.save!
-
-        @blog_layout_title_content         = @blog_layout_page.page_contents.build
-        @blog_layout_title_content.key     = "blog_title"
-        @blog_layout_title_content.content = "The blog title content"
-        @blog_layout_title_content.save!
+        @blog_layout_page = create(:page, :key => 'blog/application', :locale => I18n.locale)
+        @blog_layout_title_content = create(:page_content, 
+          :page => @blog_layout_page, :key => "blog_title")
 
         # HomeController
         @home_controller = HomeController.new
-
-        @home_page        = ManageableContent::Page.new
-        @home_page.key    = @home_controller.controller_path
-        @home_page.locale = I18n.locale
-        @home_page.save!
-
-        @home_body_content         = @home_page.page_contents.build
-        @home_body_content.key     = "body"
-        @home_body_content.content = "The home body content"
-        @home_body_content.save!
-
-        @home_side_content         = @home_page.page_contents.build
-        @home_side_content.key     = "side"
-        @home_side_content.content = "The home side content"
-        @home_side_content.save!
+        @home_page = create(:page, :key => @home_controller.controller_path, :locale => I18n.locale)
+        @home_body_content = create(:page_content, :page => @home_page, :key => "body")
+        @home_side_content = create(:page_content, :page => @home_page, :key => "side")
 
         # ContactController
         @contact_controller = ContactController.new
-
-        @contact_page        = ManageableContent::Page.new
-        @contact_page.key    = @contact_controller.controller_path
-        @contact_page.locale = I18n.locale
-        @contact_page.save!
-
-        @contact_body_content         = @contact_page.page_contents.build
-        @contact_body_content.key     = "body"
-        @contact_body_content.content = "The contact body content"
-        @contact_body_content.save!
-
-        @contact_message_content         = @contact_page.page_contents.build
-        @contact_message_content.key     = "message"
-        @contact_message_content.content = "The side content"
-        @contact_message_content.save!
+        @contact_page = create(:page, :key => @contact_controller.controller_path, :locale => I18n.locale)
+        @contact_body_content = create(:page_content, :page => @contact_page, :key => "body")
+        @contact_message_content = create(:page_content, :page => @contact_page, :key => "message")
 
         # Blog::HomeController
         @blogs_home_controller = Blog::HomeController.new
