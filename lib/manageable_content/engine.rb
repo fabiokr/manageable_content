@@ -1,6 +1,6 @@
 require 'rails'
 require 'manageable_content/controllers/dsl'
-require 'manageable_content/controllers/generator'
+require 'manageable_content/generator'
 
 module ManageableContent
 

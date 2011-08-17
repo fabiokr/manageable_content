@@ -3,7 +3,7 @@ require 'spec_helper'
 describe "The demo application" do
   context "with manageable content" do
     before :each do
-      ManageableContent::Controllers::Generator.generate!
+      ManageableContent::Generator.generate!
 
       # Application layout
       page = ManageableContent::Page.for_key('application').first

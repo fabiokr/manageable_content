@@ -1,12 +1,12 @@
 require 'spec_helper'
 
-describe ManageableContent::Controllers::Generator do
+describe ManageableContent::Generator do
 
   context "class methods" do
 
     context "generate!" do
       before :each do
-        ManageableContent::Controllers::Generator.generate!
+        ManageableContent::Generator.generate!
       end
 
       context "Layout" do
