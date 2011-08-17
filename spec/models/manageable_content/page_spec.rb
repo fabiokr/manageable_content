@@ -16,6 +16,8 @@ describe ManageableContent::Page do
     it { should_not allow_mass_assignment_of(:locale) }
     it { should_not allow_mass_assignment_of(:updated_at) }
     it { should_not allow_mass_assignment_of(:created_at) }
+
+    it { should allow_mass_assignment_of(:page_contents_attributes) }
   end
 
   context "validations" do

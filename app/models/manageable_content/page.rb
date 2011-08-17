@@ -1,9 +1,10 @@
 class ManageableContent::Page < ActiveRecord::Base
-  attr_accessible
-
   validates :locale, :presence => true
 
   has_many :page_contents
+
+  attr_accessible :page_contents_attributes
+  accepts_nested_attributes_for :page_contents
 
   # Retrieves a Page for the given key and locale.
   # By default I18n.locale is used as the locale option.
