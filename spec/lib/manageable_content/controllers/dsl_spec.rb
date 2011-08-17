@@ -3,11 +3,6 @@ require 'spec_helper'
 describe "The Controller Dsl" do
 
   context "class methods" do
-    context "manageable_ignore_controller_namespaces" do
-      it "should configure the Controllers namespaces that will be ignored" do
-        ManageableContent::Controllers::Dsl.manageable_ignore_controller_namespace_keys.should == [:admin]
-      end
-    end
 
     context "manageable_layout_content_for" do
       it "should configure the layout content keys for layout" do
@@ -16,12 +11,6 @@ describe "The Controller Dsl" do
 
         ManageableContent::Controllers::Dsl.manageable_layout_content_keys['blog/application'].should == 
           [:blog_title]
-      end
-    end
-
-    context "manageable_default_content_for" do
-      it "should configure the default content keys for all Controllers" do
-        ManageableContent::Controllers::Dsl.manageable_default_content_keys.should == [:title, :keywords]
       end
     end
 

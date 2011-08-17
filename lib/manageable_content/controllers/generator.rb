@@ -13,7 +13,7 @@ module ManageableContent
           Dsl.manageable_layout_content_keys.each_key do |layout|
             self.generate_page! layout, 
                                 locale, 
-                                (Dsl.manageable_default_content_keys + 
+                                (Engine.config.default_contents + 
                                   Dsl.manageable_layout_content_keys[layout]).uniq
           end
 
@@ -21,7 +21,7 @@ module ManageableContent
           controllers.each do |controller_class|
             self.generate_page! controller_class.controller_path, 
                                 locale, 
-                                (Dsl.manageable_default_content_keys + 
+                                (Engine.config.default_contents + 
                                   controller_class.manageable_content_keys).uniq
           end
         end
@@ -45,7 +45,7 @@ module ManageableContent
              .uniq
              .select{ |controller_class| controller_class.respond_to?(:manageable_content_for) }
              .select do |controller_class| 
-               !Dsl.manageable_ignore_controller_namespace_keys.detect do |ignored_namespace|
+               !Engine.config.ignore_controller_namespaces.detect do |ignored_namespace|
                 controller_class.controller_path.start_with? ignored_namespace.to_s
               end
             end
