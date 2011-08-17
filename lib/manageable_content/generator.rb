@@ -24,6 +24,8 @@ module ManageableContent
                                 controller_class.manageable_content_keys).uniq
         end
       end
+
+      controllers
     end
 
     protected
@@ -48,6 +50,7 @@ module ManageableContent
               controller_class.controller_path.start_with? ignored_namespace.to_s
             end
           end
+          .sort{ |controller_a, controller_b| controller_a.name <=> controller_b.name }
       end
 
       # Generates a Page and PageContent for the given key, locale and content keys.
