@@ -1,9 +1,8 @@
 namespace :manageable_content do
 
-  desc "Generates ManageableContent::Page (check documentation for 
-          ManageableContent::Controllers::Generator.generate!)"
+  desc "Generates ManageableContent::Page (check documentation for ManageableContent::Generator.generate!)"
   task :generate => :environment do
-    ManageableContent::Controllers::Generator.generate!
+    ManageableContent::Generator.generate!
   end
 
 end
