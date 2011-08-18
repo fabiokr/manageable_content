@@ -43,7 +43,7 @@ module ManageableContent
         end
            .uniq
            .select{ |controller_class| controller_class.respond_to?(:manageable_content_for) }
-           .sort{ |controller_a, controller_b| controller_a.name <=> controller_b.name }
+           .sort  { |controller_a, controller_b| controller_a.name <=> controller_b.name }
       end
 
       # Generates a Page and PageContent for the given key, locale and content keys.
