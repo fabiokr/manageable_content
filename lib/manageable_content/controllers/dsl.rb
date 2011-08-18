@@ -76,7 +76,7 @@ module ManageableContent
         private
 
           def manageable_content_for_page(type, key)
-            @pages ||= ManageableContent::Page.for_key([_layout, controller_path]).all
+            @pages ||= ManageableContent::Manager.page([_layout, controller_path]).all
 
             subject = type == :layout ? @pages.try(:slice, 0) : @pages.try(:slice, 1)
             subject.try(:page_content_for_key, key).try(:content).try(:html_safe)

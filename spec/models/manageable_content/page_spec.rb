@@ -32,10 +32,6 @@ describe ManageableContent::Page do
       @page_content = create(:page_content, :page => @page, :key => 'mycontent')
     end
 
-    it "should retrieve correct page with :for_key" do
-      ManageableContent::Page.for_key('the/example').first.should == @page
-    end
-
     it "should retrieve correct content with :page_content_for_key" do
       @page.page_content_for_key(:mycontent).should == @page_content
     end

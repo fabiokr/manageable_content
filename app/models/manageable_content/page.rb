@@ -5,15 +5,7 @@ class ManageableContent::Page < ActiveRecord::Base
 
   has_many :page_contents
 
-  # Retrieves a Page for the given key and locale.
-  # By default I18n.locale is used as the locale option.
-  #
-  def self.for_key(key, locale = I18n.locale)
-    includes(:page_contents)
-      .joins(:page_contents)
-      .where(:key => key)
-      .where(:locale => locale)
-  end
+  scope :with_contents, lambda { includes(:page_contents).joins(:page_contents) }
 
   # Retrieves a PageContent with the given key.
   # 

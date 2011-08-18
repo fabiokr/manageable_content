@@ -5,7 +5,7 @@ module ManageableContent
     # A Controller is eligible if it has set contents with :manageable_content_for.
     #
     def self.eligible_controllers
-      Rails.configuration.paths["app/controllers"].expanded.inject([]) do |controllers, dir|
+      @@eligible_controllers ||= Rails.configuration.paths["app/controllers"].expanded.inject([]) do |controllers, dir|
         controllers += Dir["#{dir}/**/*_controller.rb"].map do |file| 
           file.gsub("#{dir}/", "")
               .gsub(".rb", "")
@@ -46,6 +46,25 @@ module ManageableContent
       controllers
     end
 
+    # Retrieves a Page relation with a filter for eligible Pages. 
+    # A Page is eligible if the corresponding controller is still eligible 
+    # (from the eligible_controllers method).
+    #
+    # This method should be used to access a list of valid Pages instead of directly accessing the
+    # Page model.
+    # 
+    def self.pages
+      Page.where(:key => 
+            self.eligible_controllers.map {|controller_class| controller_class.controller_path })
+    end
+
+    # Retrieves a Page relation for the given key and locale.
+    # By default I18n.locale is used as the locale option.
+    #
+    def self.page(key, locale = I18n.locale)
+      Page.with_contents.where(:key => key).where(:locale => locale)
+    end
+
     protected
 
       # Generates a Page and PageContent for the given key, locale and content keys.
@@ -55,7 +74,7 @@ module ManageableContent
           locale '#{locale}' and keys [#{content_keys.join(',')}]"
 
         Page.transaction do
-          page = Page.for_key(key, locale).first || Page.new
+          page = Manager.page(key, locale).first || Page.new
 
           if page.new_record?
             page.key    = key
