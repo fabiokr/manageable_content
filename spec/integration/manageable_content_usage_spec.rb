@@ -3,46 +3,40 @@ require 'spec_helper'
 describe "The demo application" do
   context "with manageable content" do
     before :each do
-      ManageableContent::Generator.generate!
+      ManageableContent::Manager.generate!
 
       # Application layout
-      page = ManageableContent::Page.for_key('application').first
-      page.page_content_for_key(:title)
+      page = ManageableContent::Manager.page('application').first
+      page.page_content(:title)
         .update_attributes(:content => "Application Title Content")
-      page.page_content_for_key(:keywords)
+      page.page_content(:keywords)
         .update_attributes(:content => "Application Keywords Content")
-      page.page_content_for_key(:footer_copyright)
+      page.page_content(:footer_copyright)
         .update_attributes(:content => "Application Footer Copyright Content")
-      page.page_content_for_key(:footer_contact)
+      page.page_content(:footer_contact)
         .update_attributes(:content => "Application Footer Contact Content")
 
       # Blog layout
-      page = ManageableContent::Page.for_key('blog/application').first
-      page.page_content_for_key(:title)
-        .update_attributes(:content => "Blog Application Title Content")
-      page.page_content_for_key(:keywords)
-        .update_attributes(:content => "Blog Application Keywords Content")
-      page.page_content_for_key(:blog_title)
+      page = ManageableContent::Manager.page('blog').first
+      page.page_content(:blog_title)
         .update_attributes(:content => "Blog Application Blog Title Content")
 
       # Home controller
-      page = ManageableContent::Page.for_key('home').first
-      page.page_content_for_key(:title).update_attributes(:content => "Home Title Content")
-      page.page_content_for_key(:keywords).update_attributes(:content => "Home Keywords Content")
-      page.page_content_for_key(:body).update_attributes(:content => "Home Body Content")
-      page.page_content_for_key(:side).update_attributes(:content => "Home Side Content")
+      page = ManageableContent::Manager.page('home').first
+      page.page_content(:title).update_attributes(:content => "Home Title Content")
+      page.page_content(:keywords).update_attributes(:content => "Home Keywords Content")
+      page.page_content(:body).update_attributes(:content => "Home Body Content")
+      page.page_content(:side).update_attributes(:content => "Home Side Content")
 
       # Contact controller
-      page = ManageableContent::Page.for_key('contact').first
-      page.page_content_for_key(:title).update_attributes(:content => "Contact Title Content")
-      page.page_content_for_key(:keywords).update_attributes(:content => "Contact Keywords Content")
-      page.page_content_for_key(:body).update_attributes(:content => "Contact Body Content")
-      page.page_content_for_key(:message).update_attributes(:content => "Contact Message Content")
+      page = ManageableContent::Manager.page('contact').first
+      page.page_content(:title).update_attributes(:content => "Contact Title Content")
+      page.page_content(:keywords).update_attributes(:content => "Contact Keywords Content")
+      page.page_content(:body).update_attributes(:content => "Contact Body Content")
+      page.page_content(:message).update_attributes(:content => "Contact Message Content")
 
       # Blog Home controller
-      page = ManageableContent::Page.for_key('blog/home').first
-      page.page_content_for_key(:title).update_attributes(:content => "Blog Home Title Content")
-      page.page_content_for_key(:keywords).update_attributes(:content => "Blog Home Keywords Content")
+      page = ManageableContent::Manager.page('blog/home').first
     end
 
     context "home#index" do
@@ -94,11 +88,7 @@ describe "The demo application" do
         visit blog_home_path
 
         within "title" do
-          page.should have_content("Blog Application Title Content Blog Home Title Content")
-        end
-
-        within "#keywords" do
-          page.should have_content("Blog Application Keywords Content Blog Home Keywords Content")
+          page.should have_content("Blog Application Blog Title Content")
         end
       end
     end

@@ -12,6 +12,8 @@ describe ManageableContent::Page do
   end
 
   context "mass assignment" do
+    it { should allow_mass_assignment_of(:page_contents_attributes) }
+
     it { should_not allow_mass_assignment_of(:key) }
     it { should_not allow_mass_assignment_of(:locale) }
     it { should_not allow_mass_assignment_of(:updated_at) }
@@ -34,12 +36,12 @@ describe ManageableContent::Page do
       @page_content = create(:page_content, :page => @page, :key => 'mycontent')
     end
 
-    it "should retrieve correct page with :for_key" do
-      ManageableContent::Page.for_key('the/example').first.should == @page
+    it "should retrieve correct content with :page_content" do
+      @page.page_content(:mycontent).should == @page_content
     end
 
-    it "should retrieve correct content with :page_content_for_key" do
-      @page.page_content_for_key(:mycontent).should == @page_content
+    it "should retrieve correct content with :content" do
+      @page.content(:mycontent).should == @page_content.content
     end
   end
 end

@@ -5,4 +5,6 @@ class ManageableContent::PageContent < ActiveRecord::Base
 
   validates :page_id, :presence => true
   validates :key, :presence => true
+
+  default_scope order('key ASC')
 end
