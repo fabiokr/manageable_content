@@ -12,6 +12,8 @@ describe ManageableContent::Page do
   end
 
   context "mass assignment" do
+    it { should allow_mass_assignment_of(:page_contents_attributes) }
+
     it { should_not allow_mass_assignment_of(:key) }
     it { should_not allow_mass_assignment_of(:locale) }
     it { should_not allow_mass_assignment_of(:updated_at) }
