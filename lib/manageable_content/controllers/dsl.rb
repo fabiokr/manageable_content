@@ -36,7 +36,8 @@ module ManageableContent
           layout = options[:layout] || self.controller_path
 
           unless keys.empty?
-            Dsl.manageable_layout_content_keys[layout] = keys.uniq
+            Dsl.manageable_layout_content_keys[layout] = 
+              ((Dsl.manageable_layout_content_keys[layout] || []) + keys).uniq
           end
         end
 
