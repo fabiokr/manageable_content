@@ -5,7 +5,8 @@ module ManageableContent
     # A Controller is eligible if it has set contents with :manageable_content_for.
     #
     def self.eligible_controllers
-      @@eligible_controllers ||= Rails.configuration.paths["app/controllers"].expanded.inject([]) do |controllers, dir|
+      @@eligible_controllers ||= Rails.configuration.paths["app/controllers"]
+                                  .expanded.inject([]) do |controllers, dir|
         controllers += Dir["#{dir}/**/*_controller.rb"].map do |file| 
           file.gsub("#{dir}/", "")
               .gsub(".rb", "")
@@ -62,7 +63,24 @@ module ManageableContent
     # By default I18n.locale is used as the locale option.
     #
     def self.page(key, locale = I18n.locale)
-      Page.with_contents.where(:key => key).where(:locale => locale)
+      Page.with_contents
+          .where(:key => key)
+          .where(:locale => locale)
+    end
+
+    # Retrieves a list of eligible keys for a given Page key.
+    # This can be useful to check if a PageContent is still relevant
+    # based on the current configurations.
+    #
+    def self.eligible_contents(key)
+      layout_content_keys = Controllers::Dsl.manageable_layout_content_keys[key] || []
+      content_keys        = begin
+        "#{key.camelize}Controller".constantize.manageable_content_keys
+      rescue NameError
+        []
+      end
+
+      (layout_content_keys + content_keys).uniq
     end
 
     protected
