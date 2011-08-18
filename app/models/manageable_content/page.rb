@@ -3,7 +3,7 @@ class ManageableContent::Page < ActiveRecord::Base
 
   validates :locale, :presence => true
 
-  has_many :page_contents
+  has_many :page_contents, :dependent => :delete_all
 
   scope :with_contents, lambda { includes(:page_contents).joins(:page_contents) }
 
