@@ -17,7 +17,7 @@ describe "The demo application" do
         .update_attributes(:content => "Application Footer Contact Content")
 
       # Blog layout
-      page = ManageableContent::Page.for_key('blog/application').first
+      page = ManageableContent::Page.for_key('blog').first
       page.page_content_for_key(:blog_title)
         .update_attributes(:content => "Blog Application Blog Title Content")
 

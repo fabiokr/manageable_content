@@ -21,9 +21,20 @@ module ManageableContent
         # For example, if all Controllers using the application layout will share a 'footer_message' 
         # and a 'footer_copyright' contents, the following should be set:
         #
-        #   manageable_layout_content_for 'application', :footer_message, :footer_copyright
+        #   manageable_layout_content_for :footer_message, :footer_copyright
+        # 
+        # By default, this will set contents for a layout named the same as the Controller in which
+        # the manageable_layout_content_for method was called. For example, if it was called in
+        # the ApplicationController, it will set the layout vars for the 'application' layout.
+        # If you need to use multiple layouts with ApplicationController, you can specify
+        # for which layout are the contents being set with this:
         #
-        def manageable_layout_content_for(layout, *keys)
+        #   manageable_layout_content_for :footer_message, :footer_copyright, :layout => 'application'
+        #
+        def manageable_layout_content_for(*keys)
+          options = keys.last.is_a?(Hash) ? keys.pop : {}
+          layout = options[:layout] || self.controller_path
+
           unless keys.empty?
             Dsl.manageable_layout_content_keys[layout] = keys.uniq
           end

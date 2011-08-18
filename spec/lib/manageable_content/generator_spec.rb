@@ -26,12 +26,12 @@ describe ManageableContent::Generator do
           end
         end
 
-        context "blog/application" do
+        context "blog" do
           it "should have generated contents for each configured locale" do
             ManageableContent::Engine.config.locales.each do |locale|
-              page = ManageableContent::Page.for_key('blog/application', locale).first
+              page = ManageableContent::Page.for_key('blog', locale).first
 
-              page.key.should    == 'blog/application'
+              page.key.should    == 'blog'
               page.locale.should == locale.to_s
               page.page_contents.size.should == 1
               page.page_content_for_key(:blog_title).should_not be_nil

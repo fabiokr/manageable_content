@@ -9,7 +9,7 @@ describe "The Controller Dsl" do
         ManageableContent::Controllers::Dsl.manageable_layout_content_keys['application'].should == 
           [:footer_copyright, :footer_contact]
 
-        ManageableContent::Controllers::Dsl.manageable_layout_content_keys['blog/application'].should == 
+        ManageableContent::Controllers::Dsl.manageable_layout_content_keys['blog'].should == 
           [:blog_title]
       end
     end
@@ -35,7 +35,7 @@ describe "The Controller Dsl" do
           :page => @application_layout_page, :key => "footer_contact")
 
         # Blog Layout Contents
-        @blog_layout_page = create(:page, :key => 'blog/application', :locale => I18n.locale)
+        @blog_layout_page = create(:page, :key => 'blog', :locale => I18n.locale)
         @blog_layout_title_content = create(:page_content, 
           :page => @blog_layout_page, :key => "blog_title")
 
