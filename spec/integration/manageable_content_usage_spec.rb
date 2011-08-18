@@ -18,10 +18,6 @@ describe "The demo application" do
 
       # Blog layout
       page = ManageableContent::Page.for_key('blog/application').first
-      page.page_content_for_key(:title)
-        .update_attributes(:content => "Blog Application Title Content")
-      page.page_content_for_key(:keywords)
-        .update_attributes(:content => "Blog Application Keywords Content")
       page.page_content_for_key(:blog_title)
         .update_attributes(:content => "Blog Application Blog Title Content")
 
@@ -41,8 +37,6 @@ describe "The demo application" do
 
       # Blog Home controller
       page = ManageableContent::Page.for_key('blog/home').first
-      page.page_content_for_key(:title).update_attributes(:content => "Blog Home Title Content")
-      page.page_content_for_key(:keywords).update_attributes(:content => "Blog Home Keywords Content")
     end
 
     context "home#index" do
@@ -94,11 +88,7 @@ describe "The demo application" do
         visit blog_home_path
 
         within "title" do
-          page.should have_content("Blog Application Title Content Blog Home Title Content")
-        end
-
-        within "#keywords" do
-          page.should have_content("Blog Application Keywords Content Blog Home Keywords Content")
+          page.should have_content("Blog Application Blog Title Content")
         end
       end
     end

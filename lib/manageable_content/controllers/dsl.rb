@@ -35,9 +35,15 @@ module ManageableContent
         #
         #   manageable_content_for :body, :side
         #
+        # This will also inherit manageable contents from superclasses. For example,
+        # if all your Controllers will have a 'title' content, you can add the following
+        # to ApplicationController, and all Controllers which inherit from it will have it too:
+        #
+        #   manageable_content_for :title
+        #
         def manageable_content_for(*keys)
           unless keys.empty?
-            self.manageable_content_keys = keys.uniq
+            self.manageable_content_keys = (self.manageable_content_keys + keys).uniq
           end
         end
       end

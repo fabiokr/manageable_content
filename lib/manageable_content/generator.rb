@@ -12,16 +12,14 @@ module ManageableContent
         Controllers::Dsl.manageable_layout_content_keys.each_key do |layout|
           self.generate_page! layout, 
                               locale, 
-                              (Engine.config.default_contents + 
-                                Controllers::Dsl.manageable_layout_content_keys[layout]).uniq
+                              Controllers::Dsl.manageable_layout_content_keys[layout]
         end
 
         # controllers pages
         controllers.each do |controller_class|
           self.generate_page! controller_class.controller_path, 
                               locale, 
-                              (Engine.config.default_contents + 
-                                controller_class.manageable_content_keys).uniq
+                              controller_class.manageable_content_keys
         end
       end
 
@@ -45,12 +43,7 @@ module ManageableContent
         end
            .uniq
            .select{ |controller_class| controller_class.respond_to?(:manageable_content_for) }
-           .select do |controller_class| 
-             !Engine.config.ignore_controller_namespaces.detect do |ignored_namespace|
-              controller_class.controller_path.start_with? ignored_namespace.to_s
-            end
-          end
-          .sort{ |controller_a, controller_b| controller_a.name <=> controller_b.name }
+           .sort{ |controller_a, controller_b| controller_a.name <=> controller_b.name }
       end
 
       # Generates a Page and PageContent for the given key, locale and content keys.

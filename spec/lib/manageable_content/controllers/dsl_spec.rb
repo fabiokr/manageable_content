@@ -16,10 +16,10 @@ describe "The Controller Dsl" do
 
     context "manageable_content_for" do
       it "should configure the content keys for the HomeController" do
-        HomeController.manageable_content_keys.should == [:body, :side]
+        HomeController.manageable_content_keys.should == [:title, :keywords, :body, :side]
       end
       it "should configure the content keys for the ContactController" do
-        ContactController.manageable_content_keys.should == [:body, :message]
+        ContactController.manageable_content_keys.should == [:title, :keywords, :body, :message]
       end
     end
   end
@@ -54,9 +54,6 @@ describe "The Controller Dsl" do
         # Blog::HomeController
         @blogs_home_controller = Blog::HomeController.new
         @blog_page = create(:page, :key => @blogs_home_controller.controller_path, :locale => I18n.locale)
-
-        # Admin::HomeController
-        @admin_home_controller = Admin::HomeController.new
       end
 
       context "manageable_content_for helper" do
@@ -104,12 +101,14 @@ describe "The Controller Dsl" do
               @blogs_home_controller.manageable_layout_content_for(:blog_title).should == 
                 @blog_layout_title_content.content
             end
-          end
-        end
 
-        context "BlogController" do
-          it "should retrieve nil for a non existent page content" do
-            @admin_home_controller.manageable_content_for(:non_existent).should be_nil
+            it "should retrieve nil for a non existent layout content" do
+              @blogs_home_controller.manageable_layout_content_for(:non_existent).should be_nil
+            end
+
+            it "should retrieve nil for a non existent page content" do
+              @blogs_home_controller.manageable_content_for(:non_existent).should be_nil
+            end
           end
         end
       end

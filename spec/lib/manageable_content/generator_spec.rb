@@ -33,9 +33,7 @@ describe ManageableContent::Generator do
 
               page.key.should    == 'blog/application'
               page.locale.should == locale.to_s
-              page.page_contents.size.should == 3
-              page.page_content_for_key(:title).should_not be_nil
-              page.page_content_for_key(:keywords).should_not be_nil
+              page.page_contents.size.should == 1
               page.page_content_for_key(:blog_title).should_not be_nil
             end
           end
@@ -79,29 +77,11 @@ describe ManageableContent::Generator do
       end
 
       context "Blog::HomeController" do
-        it "should have generated contents for each configured locale" do
+        it "should NOT have generated contents for each configured locale" do
           controller_path = Blog::HomeController.controller_path
 
           ManageableContent::Engine.config.locales.each do |locale|
-            page = ManageableContent::Page.for_key(controller_path, locale).first
-
-            page.key.should    == controller_path
-            page.locale.should == locale.to_s
-            page.page_contents.size.should == 2
-            page.page_content_for_key(:title).should_not    be_nil
-            page.page_content_for_key(:keywords).should_not be_nil
-          end
-        end
-
-        context "ignored namespaces" do
-          context "Admin::HomeController" do
-            it "should NOT have generated contents for each configured locale" do
-              controller_path = Admin::HomeController.controller_path
-
-              ManageableContent::Engine.config.locales.each do |locale|
-                ManageableContent::Page.for_key(controller_path, locale).first.should be_nil
-              end
-            end
+            ManageableContent::Page.for_key(controller_path, locale).first.should be_nil
           end
         end
       end
