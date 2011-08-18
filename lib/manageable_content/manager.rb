@@ -83,7 +83,7 @@ module ManageableContent
           end
 
           content_keys.each do |content_key|
-            if page.page_content_for_key(content_key).nil?
+            if page.page_content(content_key).nil?
               page_content     = page.page_contents.build
               page_content.key = content_key
             end

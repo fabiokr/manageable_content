@@ -26,10 +26,10 @@ describe ManageableContent::Manager do
                 page.key.should    == 'application'
                 page.locale.should == locale.to_s
                 page.page_contents.size.should == 4
-                page.page_content_for_key(:title).should_not be_nil
-                page.page_content_for_key(:keywords).should_not be_nil
-                page.page_content_for_key(:footer_copyright).should_not be_nil
-                page.page_content_for_key(:footer_contact).should_not   be_nil
+                page.page_content(:title).should_not be_nil
+                page.page_content(:keywords).should_not be_nil
+                page.page_content(:footer_copyright).should_not be_nil
+                page.page_content(:footer_contact).should_not   be_nil
               end
             end
           end
@@ -42,7 +42,7 @@ describe ManageableContent::Manager do
                 page.key.should    == 'blog'
                 page.locale.should == locale.to_s
                 page.page_contents.size.should == 1
-                page.page_content_for_key(:blog_title).should_not be_nil
+                page.page_content(:blog_title).should_not be_nil
               end
             end
           end
@@ -58,10 +58,10 @@ describe ManageableContent::Manager do
               page.key.should    == controller_path
               page.locale.should == locale.to_s
               page.page_contents.size.should == 4
-              page.page_content_for_key(:title).should_not    be_nil
-              page.page_content_for_key(:keywords).should_not be_nil
-              page.page_content_for_key(:body).should_not     be_nil
-              page.page_content_for_key(:side).should_not     be_nil
+              page.page_content(:title).should_not    be_nil
+              page.page_content(:keywords).should_not be_nil
+              page.page_content(:body).should_not     be_nil
+              page.page_content(:side).should_not     be_nil
             end
           end
         end
@@ -76,10 +76,10 @@ describe ManageableContent::Manager do
               page.key.should    == controller_path
               page.locale.should == locale.to_s
               page.page_contents.size.should == 4
-              page.page_content_for_key(:title).should_not    be_nil
-              page.page_content_for_key(:keywords).should_not be_nil
-              page.page_content_for_key(:body).should_not     be_nil
-              page.page_content_for_key(:message).should_not  be_nil
+              page.page_content(:title).should_not    be_nil
+              page.page_content(:keywords).should_not be_nil
+              page.page_content(:body).should_not     be_nil
+              page.page_content(:message).should_not  be_nil
             end
           end
         end

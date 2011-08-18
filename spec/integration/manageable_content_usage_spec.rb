@@ -7,33 +7,33 @@ describe "The demo application" do
 
       # Application layout
       page = ManageableContent::Manager.page('application').first
-      page.page_content_for_key(:title)
+      page.page_content(:title)
         .update_attributes(:content => "Application Title Content")
-      page.page_content_for_key(:keywords)
+      page.page_content(:keywords)
         .update_attributes(:content => "Application Keywords Content")
-      page.page_content_for_key(:footer_copyright)
+      page.page_content(:footer_copyright)
         .update_attributes(:content => "Application Footer Copyright Content")
-      page.page_content_for_key(:footer_contact)
+      page.page_content(:footer_contact)
         .update_attributes(:content => "Application Footer Contact Content")
 
       # Blog layout
       page = ManageableContent::Manager.page('blog').first
-      page.page_content_for_key(:blog_title)
+      page.page_content(:blog_title)
         .update_attributes(:content => "Blog Application Blog Title Content")
 
       # Home controller
       page = ManageableContent::Manager.page('home').first
-      page.page_content_for_key(:title).update_attributes(:content => "Home Title Content")
-      page.page_content_for_key(:keywords).update_attributes(:content => "Home Keywords Content")
-      page.page_content_for_key(:body).update_attributes(:content => "Home Body Content")
-      page.page_content_for_key(:side).update_attributes(:content => "Home Side Content")
+      page.page_content(:title).update_attributes(:content => "Home Title Content")
+      page.page_content(:keywords).update_attributes(:content => "Home Keywords Content")
+      page.page_content(:body).update_attributes(:content => "Home Body Content")
+      page.page_content(:side).update_attributes(:content => "Home Side Content")
 
       # Contact controller
       page = ManageableContent::Manager.page('contact').first
-      page.page_content_for_key(:title).update_attributes(:content => "Contact Title Content")
-      page.page_content_for_key(:keywords).update_attributes(:content => "Contact Keywords Content")
-      page.page_content_for_key(:body).update_attributes(:content => "Contact Body Content")
-      page.page_content_for_key(:message).update_attributes(:content => "Contact Message Content")
+      page.page_content(:title).update_attributes(:content => "Contact Title Content")
+      page.page_content(:keywords).update_attributes(:content => "Contact Keywords Content")
+      page.page_content(:body).update_attributes(:content => "Contact Body Content")
+      page.page_content(:message).update_attributes(:content => "Contact Message Content")
 
       # Blog Home controller
       page = ManageableContent::Manager.page('blog/home').first
