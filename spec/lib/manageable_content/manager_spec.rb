@@ -1,12 +1,19 @@
 require 'spec_helper'
 
-describe ManageableContent::Generator do
+describe ManageableContent::Manager do
 
   context "class methods" do
 
+    context "eligible_controllers" do
+      it "should list the eligible_controllers" do
+        ManageableContent::Manager.eligible_controllers.should ==
+          [ApplicationController, ContactController, HomeController]
+      end
+    end
+
     context "generate!" do
       before :each do
-        ManageableContent::Generator.generate!
+        ManageableContent::Manager.generate!
       end
 
       context "Layout" do

@@ -1,5 +1,25 @@
 module ManageableContent
-  class Generator
+  class Manager
+
+    # Retrieves a list of Controllers eligible for having manageable content.
+    # A Controller is eligible if it has set contents with :manageable_content_for.
+    #
+    def self.eligible_controllers
+      Rails.configuration.paths["app/controllers"].expanded.inject([]) do |controllers, dir|
+        controllers += Dir["#{dir}/**/*_controller.rb"].map do |file| 
+          file.gsub("#{dir}/", "")
+              .gsub(".rb", "")
+              .camelize
+              .constantize
+        end
+      end
+         .uniq
+         .select do |controller_class| 
+           controller_class.respond_to?(:manageable_content_keys) &&
+            !controller_class.manageable_content_keys.empty?
+         end
+         .sort { |controller_a, controller_b| controller_a.name <=> controller_b.name }
+    end
 
     # Generates a Page and PageContent for each Controller with manageable content keys,
     # and the layout Page for manageable layout content keys.
@@ -27,24 +47,6 @@ module ManageableContent
     end
 
     protected
-
-      # Retrieves a list of Controllers eligible for having manageable content.
-      # A Controller is eligible if it responds to the :manageable_content_for method
-      # and does not start with an ignored namespace.
-      #
-      def self.eligible_controllers
-        Rails.configuration.paths["app/controllers"].expanded.inject([]) do |controllers, dir|
-          controllers += Dir["#{dir}/**/*_controller.rb"].map do |file| 
-            file.gsub("#{dir}/", "")
-                .gsub(".rb", "")
-                .camelize
-                .constantize
-          end
-        end
-           .uniq
-           .select{ |controller_class| controller_class.respond_to?(:manageable_content_for) }
-           .sort  { |controller_a, controller_b| controller_a.name <=> controller_b.name }
-      end
 
       # Generates a Page and PageContent for the given key, locale and content keys.
       #
