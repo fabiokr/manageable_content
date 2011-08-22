@@ -6,6 +6,7 @@ describe ManageableContent::PageContent do
     it { should have_db_column(:page_id).of_type(:integer) }
     it { should have_db_column(:key).of_type(:string) }
     it { should have_db_column(:content).of_type(:text) }
+    it { should have_db_column(:short).of_type(:boolean) }
     it { should have_db_column(:created_at).of_type(:datetime) }
     it { should have_db_column(:updated_at).of_type(:datetime) }
 
@@ -17,6 +18,7 @@ describe ManageableContent::PageContent do
 
     it { should_not allow_mass_assignment_of(:key) }
     it { should_not allow_mass_assignment_of(:page_id) }
+    it { should_not allow_mass_assignment_of(:short) }
     it { should_not allow_mass_assignment_of(:updated_at) }
     it { should_not allow_mass_assignment_of(:created_at) }
   end

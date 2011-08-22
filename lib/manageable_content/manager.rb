@@ -82,7 +82,7 @@ module ManageableContent
         []
       end
 
-      layout_content_keys.merge content_keys
+      layout_content_keys.merge(content_keys)
     end
 
     protected
@@ -102,11 +102,10 @@ module ManageableContent
             page.save!
           end
 
-          content_keys.keys.each do |content_key|
-            if page.page_content(content_key).nil?
-              page_content     = page.page_contents.build
-              page_content.key = content_key
-            end
+          content_keys.each do |content_key, content_type|
+            page_content       = page.page_content(content_key) || page.page_contents.build
+            page_content.key   = content_key
+            page_content.short = content_type == :string
           end
 
           page.save!
