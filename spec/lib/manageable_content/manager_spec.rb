@@ -109,6 +109,11 @@ describe ManageableContent::Manager do
               end
             end.flatten
         end
+
+        it "should list the eligible contents" do
+          ManageableContent::Manager.eligible_contents(HomeController.controller_path).should ==
+            {:title => :string, :keywords => :text, :body => :text, :side => :text}
+        end
       end
 
       context "page" do

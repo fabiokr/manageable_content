@@ -7,19 +7,25 @@ describe "The Controller Dsl" do
     context "manageable_layout_content_for" do
       it "should configure the layout content keys for layout" do
         ManageableContent::Controllers::Dsl.manageable_layout_content_keys['application'].should == 
-          [:footer_copyright, :footer_contact]
+          {:footer_copyright => :text, :footer_contact => :string}
 
         ManageableContent::Controllers::Dsl.manageable_layout_content_keys['blog'].should == 
-          [:blog_title]
+          {:blog_title => :text}
       end
     end
 
     context "manageable_content_for" do
       it "should configure the content keys for the HomeController" do
-        HomeController.manageable_content_keys.should == [:title, :keywords, :body, :side]
+        HomeController.manageable_content_keys.should == {
+          :title => :string, :keywords => :text, 
+          :body => :text, :side => :text
+        }
       end
       it "should configure the content keys for the ContactController" do
-        ContactController.manageable_content_keys.should == [:title, :keywords, :body, :message]
+        ContactController.manageable_content_keys.should == {
+          :title => :string, :keywords => :text, 
+          :body => :text, :message => :text
+        }
       end
     end
   end
