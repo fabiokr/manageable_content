@@ -1,4 +1,4 @@
-= ManageableContent
+= ManageableContent http://travis-ci.org/fabiokr/manageable_content.png
 
 This project rocks and uses MIT-LICENSE.
 
