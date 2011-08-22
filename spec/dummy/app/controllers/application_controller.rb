@@ -3,6 +3,9 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery
 
-  manageable_layout_content_for :footer_copyright, :footer_contact
-  manageable_content_for :title, :keywords
+  manageable_layout_content_for :footer_contact,   :type => :string
+  manageable_layout_content_for :footer_copyright, :type => :text
+
+  manageable_content_for :title,    :type => :string
+  manageable_content_for :keywords, :type => :text
 end

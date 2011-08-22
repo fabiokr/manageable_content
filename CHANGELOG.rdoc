@@ -1,0 +1,6 @@
+== 0.1.0
+
+* ManageableContent::Controllers::Dsl
+* ManageableContent::Manager
+* ManageableContent::Page
+* ManageableContent::PageContent

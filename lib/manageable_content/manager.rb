@@ -72,15 +72,17 @@ module ManageableContent
     # This can be useful to check if a PageContent is still relevant
     # based on the current configurations.
     #
+    # This will return a list of page keys with it's corresponding content type (:string or :text).
+    #
     def self.eligible_contents(key)
-      layout_content_keys = Controllers::Dsl.manageable_layout_content_keys[key] || []
+      layout_content_keys = Controllers::Dsl.manageable_layout_content_keys[key] || {}
       content_keys        = begin
         "#{key.camelize}Controller".constantize.manageable_content_keys
       rescue NameError
         []
       end
 
-      (layout_content_keys + content_keys).uniq
+      layout_content_keys.merge(content_keys)
     end
 
     protected
@@ -89,7 +91,7 @@ module ManageableContent
       #
       def self.generate_page!(key, locale, content_keys)
         Rails.logger.info "Generating ManageableContent::Page for key '#{key}', 
-          locale '#{locale}' and keys [#{content_keys.join(',')}]"
+          locale '#{locale}' and keys [#{content_keys.keys.join(',')}]"
 
         Page.transaction do
           page = Manager.page(key, locale).first || Page.new
@@ -100,11 +102,10 @@ module ManageableContent
             page.save!
           end
 
-          content_keys.each do |content_key|
-            if page.page_content(content_key).nil?
-              page_content     = page.page_contents.build
-              page_content.key = content_key
-            end
+          content_keys.each do |content_key, content_type|
+            page_content       = page.page_content(content_key) || page.page_contents.build
+            page_content.key   = content_key
+            page_content.short = content_type == :string
           end
 
           page.save!

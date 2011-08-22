@@ -8,7 +8,7 @@ module ManageableContent
 
       included do
         class_attribute :manageable_content_keys
-        self.manageable_content_keys = []
+        self.manageable_content_keys = {}
 
         helper_method :manageable_layout_content_for
         helper_method :manageable_content_for
@@ -31,13 +31,19 @@ module ManageableContent
         #
         #   manageable_layout_content_for :footer_message, :footer_copyright, :layout => 'application'
         #
+        # You can also set a content type for the given keys. By default they are :text content types.
+        # Available types are :text for long contents and :string for short contents.
+        #
+        #   manageable_layout_content_for :footer_copyright, :type => :string
+        #
         def manageable_layout_content_for(*keys)
           options = keys.last.is_a?(Hash) ? keys.pop : {}
-          layout = options[:layout] || self.controller_path
+          layout  = options[:layout] || self.controller_path
+          type    = options[:type]   || :text
 
           unless keys.empty?
             Dsl.manageable_layout_content_keys[layout] = 
-              ((Dsl.manageable_layout_content_keys[layout] || []) + keys).uniq
+              ((Dsl.manageable_layout_content_keys[layout] || {}).merge(keys_for_type(type, keys)))
           end
         end
 
@@ -53,9 +59,26 @@ module ManageableContent
         #
         #   manageable_content_for :title
         #
+        # You can also set a content type for the given keys. By default they are :text content types.
+        # Available types are :text for long contents and :string for short contents.
+        #
+        #   manageable_content_for :title, :type => :string
+        #
         def manageable_content_for(*keys)
+          options = keys.last.is_a?(Hash) ? keys.pop : {}
+          type    = options[:type] || :text
+
           unless keys.empty?
-            self.manageable_content_keys = (self.manageable_content_keys + keys).uniq
+            self.manageable_content_keys = (self.manageable_content_keys.merge(keys_for_type(type, keys)))
+          end
+        end
+
+        private
+
+        def keys_for_type(type, keys)
+          keys.inject({}) do |config, key|
+            config[key] = type
+            config
           end
         end
       end

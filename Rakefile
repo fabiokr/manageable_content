@@ -17,6 +17,8 @@ RDoc::Task.new(:rdoc) do |rdoc|
   rdoc.title    = 'ManageableContent'
   rdoc.options << '--line-numbers'
   rdoc.rdoc_files.include('README.rdoc')
+  rdoc.rdoc_files.include('CHANGELOG.rdoc')
+  rdoc.rdoc_files.include('app/**/*.rb')
   rdoc.rdoc_files.include('lib/**/*.rb')
 end
 

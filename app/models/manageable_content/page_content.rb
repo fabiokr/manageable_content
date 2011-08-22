@@ -4,7 +4,7 @@ class ManageableContent::PageContent < ActiveRecord::Base
   attr_accessible :content
 
   validates :page_id, :presence => true
-  validates :key, :presence => true
+  validates :key,     :presence => true
 
-  default_scope order('key ASC')
+  default_scope order('short DESC, key ASC')
 end

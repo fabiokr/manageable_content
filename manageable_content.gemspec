@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.summary     = "A content management framework for Rails 3.1"
   s.description = "A content management framework for Rails 3.1"
 
-  s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.rdoc"]
+  s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.rdoc", "CHANGELOG.rdoc"]
   s.test_files = Dir['spec/**/*']
 
   s.add_dependency "rails", "~> 3.1.0.rc6"
