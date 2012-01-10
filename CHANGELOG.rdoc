@@ -1,3 +1,7 @@
+== 0.2.2
+
+* Fixed Page model class loading 
+
 == 0.2.1
 
 * Only caches eligible_controllers on ManageableContent::Manager if Rails.configuration.cache_classes is true

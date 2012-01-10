@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    manageable_content (0.2.0)
+    manageable_content (0.2.2)
       rails (~> 3.1.0)
 
 GEM
