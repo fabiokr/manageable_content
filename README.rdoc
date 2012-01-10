@@ -81,6 +81,17 @@ If you need different contents for multiple locales, you can generate multiple p
 
 In your views, the helper calls will remain the same. The helpers use I18n.locale to get the current locale and than will use the content available for that locale.
 
+=== Specs
+
+To run the specs, first you need to setup the dummy application database and clone it for the test environment:
+
+   rake app:db:schema:load
+   rake app:db:test:clone
+
+Now you can run the specs with this:
+
+   rake spec
+
 == Contributors
 
 https://github.com/fabiokr/manageable_content/contributors
