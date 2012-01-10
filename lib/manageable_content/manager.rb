@@ -17,7 +17,7 @@ module ManageableContent
          .uniq
          .select do |controller_class| 
            controller_class.respond_to?(:manageable_content_keys) &&
-            !controller_class.manageable_content_keys.empty?
+             controller_class.manageable_content_keys.present?
          end
          .sort { |controller_a, controller_b| controller_a.name <=> controller_b.name }
     end

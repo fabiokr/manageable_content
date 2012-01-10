@@ -41,7 +41,7 @@ module ManageableContent
           layout  = options[:layout] || self.controller_path
           type    = options[:type]   || :text
 
-          unless keys.empty?
+          if keys.present?
             Dsl.manageable_layout_content_keys[layout] = 
               ((Dsl.manageable_layout_content_keys[layout] || {}).merge(keys_for_type(type, keys)))
           end
@@ -68,7 +68,7 @@ module ManageableContent
           options = keys.last.is_a?(Hash) ? keys.pop : {}
           type    = options[:type] || :text
 
-          unless keys.empty?
+          if keys.present?
             self.manageable_content_keys = (self.manageable_content_keys.merge(keys_for_type(type, keys)))
           end
         end
