@@ -8,8 +8,8 @@ Gem::Specification.new do |s|
   s.authors     = ["Fabio Kreusch"]
   s.email       = ["fabiokr@gmail.com"]
   s.homepage    = "https://github.com/fabiokr/manageable_content"
-  s.summary     = "A content management framework for Rails 3.1"
-  s.description = "A content management framework for Rails 3.1"
+  s.summary     = "A content management framework for Rails"
+  s.description = "A content management framework for Rails (compatible with 3.1 and 3.2)"
 
   s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.rdoc", "CHANGELOG.rdoc"]
   s.test_files = Dir['spec/**/*']
