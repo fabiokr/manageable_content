@@ -1,4 +1,4 @@
-= ManageableContent http://travis-ci.org/fabiokr/manageable_content.png
+= ManageableContent {<img src="https://secure.travis-ci.org/fabiokr/manageable_content.png?branch=master" alt="Build Status" />}[http://travis-ci.org/fabiokr/manageable_content]
 
 Manageable Content is a Rails 3.1 Engine that provides a simple framework for content management. It works by providing a Page instance for each of your configured controllers, so that each controller can have it's own contents that will be available to the views. You can also have shared contents.
 
@@ -11,13 +11,13 @@ This engine is a work in progress and open for contributions! Please don't forge
 This gem is compatible with Rails 3.1. To install it, add the following to your Gemfile:
 
    gem 'manageable_content'
-   
+
 After that, run the 'bundle' command to install the gem.
 
 The next step is to import the engine migrations to your application. Just run this:
 
    bundle exec rake manageable_content_engine:install:migrations
-   
+
 Then migrate your database with the usual command:
 
    bundle exec rake db:migrate
@@ -25,7 +25,7 @@ Then migrate your database with the usual command:
 The last step is to include the Dsl in where you want to make the ManageableContent engine available. For example, you might want to add the following code to your ApplicationController:
 
    include ManageableContent::Controllers::Dsl
-   
+
 == Getting Started
 
 ManageableContent supports two types of contents: a controller content, and a layout content.
@@ -37,11 +37,11 @@ A layout content is a content that will be shared between controllers. For examp
 Supposing that you have a controller named ContactController and you want it to have its own 'body' content. You will need to add this to the controller code:
 
    manageable_content_for :body
-   
+
 After that, run the following rake task:
 
    bundle exec rake manageable_content:generate
-   
+
 This rake task will check your controllers configurations and will generate the corresponding pages for each controller with their contents. This should be run everytime a new controller or page content is added. This rake task just calls the ManageableContent::Manager.generate! method. You might want to add some kind of hook so that when you deploy your application the generator will run.
 
 You might also want to have an administration interface to edit you pages contents. Currently, this engine does not provide that, but you can check an admin example here: https://github.com/fabiokr/manageable_content_example_app/
