@@ -83,26 +83,32 @@ module ManageableContent
         end
       end
 
-      module InstanceMethods
+      # Retrieves the content for the current layout with a given key.
+      def manageable_layout_content_for(key)
+        manageable_content_for_page :layout, key
+      end
 
-        # Retrieves the content for the current layout with a given key.
-        def manageable_layout_content_for(key)
-          manageable_content_for_page :layout, key
+      # Retrieves the content for the current page with a given key.
+      def manageable_content_for(key)
+        manageable_content_for_page :controller, key
+      end
+
+      private
+
+      def manageable_content_for_page(type, key)
+        layout = if _layout.instance_of? String
+          # Rails <= 3.1
+          _layout
+        else
+          # Rails >= 3.2 returns something like "layout/application", so we get everything but the
+          # "layout" part
+          _layout.virtual_path.split('/')[(1..-1)].join('/')
         end
 
-        # Retrieves the content for the current page with a given key.
-        def manageable_content_for(key)
-          manageable_content_for_page :controller, key
-        end
+        @pages ||= ManageableContent::Manager.page([layout, controller_path])
 
-        private
-
-          def manageable_content_for_page(type, key)
-            @pages ||= ManageableContent::Manager.page([_layout, controller_path]).all
-
-            subject = type == :layout ? @pages.try(:slice, 0) : @pages.try(:slice, 1)
-            subject.try(:content, key).try(:html_safe)
-          end
+        subject = type == :layout ? @pages.try(:slice, 0) : @pages.try(:slice, 1)
+        subject.try(:content, key).try(:html_safe)
       end
     end
   end

@@ -1,6 +1,11 @@
+== 0.2.3
+
+* Added compatibility with Rails 3.2
+* Added compatibility with Ruby 1.8.7
+
 == 0.2.2
 
-* Fixed Page model class loading 
+* Fixed Page model class loading
 
 == 0.2.1
 
