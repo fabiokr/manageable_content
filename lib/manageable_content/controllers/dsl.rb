@@ -2,7 +2,7 @@ module ManageableContent
   module Controllers
     module Dsl
       extend ActiveSupport::Concern
-        
+
       mattr_accessor :manageable_layout_content_keys
       self.manageable_layout_content_keys = {}
 
@@ -18,11 +18,11 @@ module ManageableContent
 
         # Configures the manageable contents that will be shared between all Controllers that
         # use a given layout.
-        # For example, if all Controllers using the application layout will share a 'footer_message' 
+        # For example, if all Controllers using the application layout will share a 'footer_message'
         # and a 'footer_copyright' contents, the following should be set:
         #
         #   manageable_layout_content_for :footer_message, :footer_copyright
-        # 
+        #
         # By default, this will set contents for a layout named the same as the Controller in which
         # the manageable_layout_content_for method was called. For example, if it was called in
         # the ApplicationController, it will set the layout vars for the 'application' layout.
@@ -42,7 +42,7 @@ module ManageableContent
           type    = options[:type]   || :text
 
           if keys.present?
-            Dsl.manageable_layout_content_keys[layout] = 
+            Dsl.manageable_layout_content_keys[layout] =
               ((Dsl.manageable_layout_content_keys[layout] || {}).merge(keys_for_type(type, keys)))
           end
         end
@@ -86,13 +86,11 @@ module ManageableContent
       module InstanceMethods
 
         # Retrieves the content for the current layout with a given key.
-        #
         def manageable_layout_content_for(key)
           manageable_content_for_page :layout, key
         end
 
         # Retrieves the content for the current page with a given key.
-        #
         def manageable_content_for(key)
           manageable_content_for_page :controller, key
         end

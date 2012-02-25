@@ -7,19 +7,14 @@ describe "The demo application" do
 
       # Application layout
       page = ManageableContent::Manager.page('application').first
-      page.page_content(:title)
-        .update_attributes(:content => "Application Title Content")
-      page.page_content(:keywords)
-        .update_attributes(:content => "Application Keywords Content")
-      page.page_content(:footer_copyright)
-        .update_attributes(:content => "Application Footer Copyright Content")
-      page.page_content(:footer_contact)
-        .update_attributes(:content => "Application Footer Contact Content")
+      page.page_content(:title).update_attributes(:content => "Application Title Content")
+      page.page_content(:keywords).update_attributes(:content => "Application Keywords Content")
+      page.page_content(:footer_copyright).update_attributes(:content => "Application Footer Copyright Content")
+      page.page_content(:footer_contact).update_attributes(:content => "Application Footer Contact Content")
 
       # Blog layout
       page = ManageableContent::Manager.page('blog').first
-      page.page_content(:blog_title)
-        .update_attributes(:content => "Blog Application Blog Title Content")
+      page.page_content(:blog_title).update_attributes(:content => "Blog Application Blog Title Content")
 
       # Home controller
       page = ManageableContent::Manager.page('home').first

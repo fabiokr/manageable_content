@@ -120,8 +120,7 @@ describe ManageableContent::Manager do
         it "should retrieve pages correctly" do
           [ApplicationController, ContactController, HomeController].each do |controller_class|
             ManageableContent::Engine.config.locales.each do |locale|
-              page = ManageableContent::Manager
-                      .page(controller_class.controller_path, locale).first
+              page = ManageableContent::Manager.page(controller_class.controller_path, locale).first
 
               page.key.should    == controller_class.controller_path
               page.locale.should == locale.to_s
