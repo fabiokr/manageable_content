@@ -6,5 +6,5 @@ class ManageableContent::PageContent < ActiveRecord::Base
   validates :page_id, :presence => true
   validates :key,     :presence => true
 
-  default_scope order('short DESC, key ASC')
+  default_scope order("#{ActiveRecord::Base.connection.quote_column_name('short')} DESC, #{ActiveRecord::Base.connection.quote_column_name('key')} ASC")
 end
