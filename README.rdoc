@@ -79,6 +79,8 @@ If you need different contents for multiple locales, you can generate multiple p
 
    ManageableContent::Engine.config.locales = [:en, :pt]
 
+By default, this will be set as the same as your application config.i18n.default_locale.
+
 In your views, the helper calls will remain the same. The helpers use I18n.locale to get the current locale and than will use the content available for that locale.
 
 === Specs

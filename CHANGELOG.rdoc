@@ -1,3 +1,7 @@
+== 0.2.5
+
+* Running engine i18n initializer after the application so that we can properly load default_locale
+
 == 0.2.4
 
 * Fixed PageContent default_scope to use quote_column_name
