@@ -12,8 +12,25 @@ module ManageableContent
       end
     end
 
-    # Generates a Page and PageContent for each Controller with manageable content keys,
+    # Retrieves a list of custom pages eligible for having manageable content.
+    # A page is eligible if it is configured on  ManageableContent::Engine.config.custom_pages.
+    # This method is cached if Rails.configuration.cache_classes is true.
+    def self.eligible_custom
+      if Rails.configuration.cache_classes
+        @@eligible_custom ||= ManageableContent::Engine.config.custom_pages.keys
+      else
+        ManageableContent::Engine.config.custom_pages.keys
+      end
+    end
+
+    # Generates a Page and PageContent for each Controller or custom page with manageable content keys,
     # and the layout Page for manageable layout content keys.
+    # Custom pages can be defined within an initializer with the following code:
+    #
+    #    ManageableContent::Engine.config.custom_pages = {
+    #     "static/page1" => [:body],
+    #     "static/page2" => [:body, :footer]
+    #   }
     def self.generate!
       controllers = eligible_controllers
 
@@ -31,6 +48,13 @@ module ManageableContent
                               locale,
                               controller_class.manageable_content_keys
         end
+
+        # custom pages
+        ManageableContent::Engine.config.custom_pages.each do |custom_page, content_keys|
+          generate_page! custom_page,
+                              locale,
+                              content_keys
+        end
       end
 
       controllers
@@ -43,8 +67,10 @@ module ManageableContent
     # This method should be used to access a list of valid Pages instead of directly accessing the
     # Page model.
     def self.pages
-      Page.where(:key =>
-            eligible_controllers.map {|controller_class| controller_class.controller_path })
+      eligible_keys = eligible_controllers.map {|controller_class| controller_class.controller_path } +
+                        eligible_custom
+
+      Page.where(:key => eligible_keys)
     end
 
     # Retrieves a Page relation for the given key and locale.
@@ -63,7 +89,7 @@ module ManageableContent
       content_keys        = begin
         "#{key.camelize}Controller".constantize.manageable_content_keys
       rescue NameError
-        []
+        ManageableContent::Engine.config.custom_pages[key] || {}
       end
 
       layout_content_keys.merge(content_keys)

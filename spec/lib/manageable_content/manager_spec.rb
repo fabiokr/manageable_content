@@ -11,6 +11,13 @@ describe ManageableContent::Manager do
       end
     end
 
+    context "eligible_custom" do
+      it "should list the eligible custom pages" do
+        ManageableContent::Manager.eligible_custom.should ==
+          ["static/page1", "static/page2"]
+      end
+    end
+
     context "generate!" do
       before :each do
         ManageableContent::Manager.generate!
@@ -84,6 +91,29 @@ describe ManageableContent::Manager do
           end
         end
 
+        context "Custom Pages" do
+          it "should have generated contents for each configured locale" do
+            controller_path = ContactController.controller_path
+
+            ManageableContent::Engine.config.locales.each do |locale|
+              # Page1
+              page = ManageableContent::Manager.page("static/page1", locale).first
+              page.key.should    == "static/page1"
+              page.locale.should == locale.to_s
+              page.page_contents.size.should == 1
+              page.page_content(:body).short.should be_false
+
+              # Page1=2
+              page = ManageableContent::Manager.page("static/page2", locale).first
+              page.key.should    == "static/page2"
+              page.locale.should == locale.to_s
+              page.page_contents.size.should == 2
+              page.page_content(:body).short.should be_false
+              page.page_content(:footer).short.should be_true
+            end
+          end
+        end
+
         context "Blog::HomeController" do
           it "should NOT have generated contents for each configured locale" do
             controller_path = Blog::HomeController.controller_path
@@ -103,16 +133,26 @@ describe ManageableContent::Manager do
 
         it "should list the eligible pages" do
           ManageableContent::Manager.pages.should ==
-            [ApplicationController, ContactController, HomeController].map do |controller_class|
-              ManageableContent::Engine.config.locales.map do |locale|
-                ManageableContent::Manager.page(controller_class.controller_path, locale).first
-              end
-            end.flatten
+            ([ApplicationController, ContactController, HomeController].map do |controller_class|
+                ManageableContent::Engine.config.locales.map do |locale|
+                  ManageableContent::Manager.page(controller_class.controller_path, locale).first
+                end
+              end.flatten + ["static/page1", "static/page2"].map do |custom_page_key|
+                ManageableContent::Engine.config.locales.map do |locale|
+                  ManageableContent::Manager.page(custom_page_key, locale).first
+                end
+              end.flatten)
         end
 
         it "should list the eligible contents" do
           ManageableContent::Manager.eligible_contents(HomeController.controller_path).should ==
             {:title => :string, :keywords => :text, :body => :text, :side => :text}
+
+          ManageableContent::Manager.eligible_contents("static/page1").should ==
+            {:body => :text}
+
+          ManageableContent::Manager.eligible_contents("static/page2").should ==
+            {:body => :text, :footer => :string}
         end
       end
 

@@ -56,6 +56,18 @@ If you need a content that all your controllers will have (for example, a 'title
 
    manageable_content_for :title
 
+=== Custom contents
+
+If you need custom pages that are not directly controller related, you can configure them using an initializer:
+
+   ManageableContent::Engine.config.custom_pages = {
+     "static/page1" => {:body => :text},
+     "static/page2" => {:body => :text, :footer => :string}
+   }
+
+This work in the same way as controller pages. The example above would create two pages with the keys
+"static/page1" and "static/page2" respectivelly.
+
 === Layout contents
 
 Supposing that your application will have a 'footer' content that should be the same in all of your controllers, you would add this to your ApplicationController:

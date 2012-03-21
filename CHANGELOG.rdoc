@@ -1,3 +1,7 @@
+== 0.2.6
+
+* Added support to custom pages
+
 == 0.2.5
 
 * Running engine i18n initializer after the application so that we can properly load default_locale
