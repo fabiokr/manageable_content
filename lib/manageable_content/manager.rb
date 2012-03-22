@@ -17,7 +17,7 @@ module ManageableContent
     # This method is cached if Rails.configuration.cache_classes is true.
     def self.eligible_custom
       if Rails.configuration.cache_classes
-        @@eligible_custom ||= ManageableContent::Engine.config.custom_pages.keys
+        @@eligible_custom ||= ManageableContent::Engine.config.custom_pages.keys.sort
       else
         ManageableContent::Engine.config.custom_pages.keys.sort
       end
