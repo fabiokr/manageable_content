@@ -19,7 +19,7 @@ module ManageableContent
       if Rails.configuration.cache_classes
         @@eligible_custom ||= ManageableContent::Engine.config.custom_pages.keys
       else
-        ManageableContent::Engine.config.custom_pages.keys
+        ManageableContent::Engine.config.custom_pages.keys.sort
       end
     end
 
