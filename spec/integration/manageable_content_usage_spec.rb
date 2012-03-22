@@ -91,7 +91,6 @@ describe "The demo application" do
           visit staticpage1_path
 
           within "#body" do
-            save_and_open_page
             page.should have_content("Static Page 1 Body Content")
           end
         end
