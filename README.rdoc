@@ -68,6 +68,15 @@ If you need custom pages that are not directly controller related, you can confi
 This work in the same way as controller pages. The example above would create two pages with the keys
 "static/page1" and "static/page2" respectivelly.
 
+To be able to use the helpers to retrieve the content, the controller responsible for the static pages
+has to tell manageable_content what page key it will be looking for. You can do that with the following code:
+
+  manageable_content_custom_key do
+    params[:page]
+  end
+
+This will use the params[:page] as the page key to be used by the manageable_content_for helper.
+
 === Layout contents
 
 Supposing that your application will have a 'footer' content that should be the same in all of your controllers, you would add this to your ApplicationController:

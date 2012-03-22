@@ -30,6 +30,13 @@ describe "The demo application" do
       page.page_content(:body).update_attributes(:content => "Contact Body Content")
       page.page_content(:message).update_attributes(:content => "Contact Message Content")
 
+      # StaticPages controller
+      page = ManageableContent::Manager.page('static/page1').first
+      page.page_content(:body).update_attributes(:content => "Static Page 1 Body Content")
+
+      page = ManageableContent::Manager.page('static/page2').first
+      page.page_content(:body).update_attributes(:content => "Static Page 2 Body Content")
+
       # Blog Home controller
       page = ManageableContent::Manager.page('blog/home').first
     end
@@ -74,6 +81,29 @@ describe "The demo application" do
 
         within "#message" do
           page.should have_content("Contact Message Content")
+        end
+      end
+    end
+
+    context "static_pages#index" do
+      context "static/page1" do
+        it "should show correct static/page1 contents" do
+          visit staticpage1_path
+
+          within "#body" do
+            save_and_open_page
+            page.should have_content("Static Page 1 Body Content")
+          end
+        end
+      end
+
+      context "static/page2" do
+        it "should show correct static/page2 contents" do
+          visit staticpage2_path
+
+          within "#body" do
+            page.should have_content("Static Page 2 Body Content")
+          end
         end
       end
     end

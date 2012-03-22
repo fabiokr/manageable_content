@@ -102,7 +102,8 @@ module ManageableContent
     def self.find_eligible_controllers
       controllers.uniq.select do |controller_class|
        controller_class.respond_to?(:manageable_content_keys) &&
-        controller_class.manageable_content_keys.present?
+        controller_class.manageable_content_keys.present? &&
+          controller_class.manageable_content_custom_key_evaluator.nil?
       end.sort do |controller_a, controller_b|
         controller_a.name <=> controller_b.name
       end

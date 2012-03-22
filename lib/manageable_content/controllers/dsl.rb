@@ -7,6 +7,7 @@ module ManageableContent
       self.manageable_layout_content_keys = {}
 
       included do
+        class_attribute :manageable_content_custom_key_evaluator
         class_attribute :manageable_content_keys
         self.manageable_content_keys = {}
 
@@ -73,6 +74,19 @@ module ManageableContent
           end
         end
 
+        # Defines a custom page key that should be looked at for valid pages for the current controller.
+        # This can be useful when dealing with custom pages.
+        # Expects a block that should return a page key.
+        # E.g.:
+        #
+        #   manageable_content_page_key do |params|
+        #     params[:page]
+        #   end
+        def manageable_content_custom_key(&block)
+          raise ArgumentError, "Block required" unless block_given?
+          self.manageable_content_custom_key_evaluator = block
+        end
+
         private
 
         def keys_for_type(type, keys)
@@ -105,7 +119,14 @@ module ManageableContent
           _layout.virtual_path.split('/')[(1..-1)].join('/')
         end
 
-        @pages ||= ManageableContent::Manager.page([layout, controller_path])
+        keys = [layout]
+        keys << if self.class.manageable_content_custom_key_evaluator
+          instance_eval(&self.class.manageable_content_custom_key_evaluator)
+        else
+          controller_path
+        end
+
+        @pages ||= ManageableContent::Manager.page(keys)
 
         subject = type == :layout ? @pages.try(:slice, 0) : @pages.try(:slice, 1)
         subject.try(:content, key).try(:html_safe)

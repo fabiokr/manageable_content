@@ -6,10 +6,10 @@ describe "The Controller Dsl" do
 
     context "manageable_layout_content_for" do
       it "should configure the layout content keys for layout" do
-        ManageableContent::Controllers::Dsl.manageable_layout_content_keys['application'].should == 
+        ManageableContent::Controllers::Dsl.manageable_layout_content_keys['application'].should ==
           {:footer_copyright => :text, :footer_contact => :string}
 
-        ManageableContent::Controllers::Dsl.manageable_layout_content_keys['blog'].should == 
+        ManageableContent::Controllers::Dsl.manageable_layout_content_keys['blog'].should ==
           {:blog_title => :text}
       end
     end
@@ -17,15 +17,21 @@ describe "The Controller Dsl" do
     context "manageable_content_for" do
       it "should configure the content keys for the HomeController" do
         HomeController.manageable_content_keys.should == {
-          :title => :string, :keywords => :text, 
+          :title => :string, :keywords => :text,
           :body => :text, :side => :text
         }
       end
       it "should configure the content keys for the ContactController" do
         ContactController.manageable_content_keys.should == {
-          :title => :string, :keywords => :text, 
+          :title => :string, :keywords => :text,
           :body => :text, :message => :text
         }
+      end
+    end
+
+    context "manageable_content_custom_key" do
+      it "should configure the custom key evaluator for the StaticPagesController" do
+        StaticPagesController.manageable_content_custom_key_evaluator.should_not be_nil
       end
     end
   end
@@ -35,14 +41,14 @@ describe "The Controller Dsl" do
       before :each do
         # Application Layout Contents
         @application_layout_page = create(:page, :key => 'application', :locale => I18n.locale)
-        @application_layout_footer_copyright_content = create(:page_content, 
+        @application_layout_footer_copyright_content = create(:page_content,
           :page => @application_layout_page, :key => "footer_copyright")
-        @application_layout_footer_contact_content = create(:page_content, 
+        @application_layout_footer_contact_content = create(:page_content,
           :page => @application_layout_page, :key => "footer_contact")
 
         # Blog Layout Contents
         @blog_layout_page = create(:page, :key => 'blog', :locale => I18n.locale)
-        @blog_layout_title_content = create(:page_content, 
+        @blog_layout_title_content = create(:page_content,
           :page => @blog_layout_page, :key => "blog_title")
 
         # HomeController
@@ -56,6 +62,15 @@ describe "The Controller Dsl" do
         @contact_page = create(:page, :key => @contact_controller.controller_path, :locale => I18n.locale)
         @contact_body_content = create(:page_content, :page => @contact_page, :key => "body")
         @contact_message_content = create(:page_content, :page => @contact_page, :key => "message")
+
+        # StaticPagesController
+        @static_pages_controller = StaticPagesController.new
+
+        @static_page_1_page = create(:page, :key => "static/page1", :locale => I18n.locale)
+        @static_page_1_body_content = create(:page_content, :page => @static_page_1_page, :key => "body")
+
+        @static_page_2_page = create(:page, :key => "static/page2", :locale => I18n.locale)
+        @static_page_2_body_content = create(:page_content, :page => @static_page_2_page, :key => "body")
 
         # Blog::HomeController
         @blogs_home_controller = Blog::HomeController.new
@@ -72,22 +87,22 @@ describe "The Controller Dsl" do
               @home_controller.manageable_content_for(:side).should == @home_side_content.content
             end
             it "should retrieve the correct content for :footer_copyright" do
-              @home_controller.manageable_layout_content_for(:footer_copyright).should == 
+              @home_controller.manageable_layout_content_for(:footer_copyright).should ==
                 @application_layout_footer_copyright_content.content
             end
             it "should retrieve the correct content for :footer_contact" do
-              @home_controller.manageable_layout_content_for(:footer_contact).should == 
+              @home_controller.manageable_layout_content_for(:footer_contact).should ==
                 @application_layout_footer_contact_content.content
             end
           end
 
           context "ContactController" do
             it "should retrieve the correct content for :body" do
-              @contact_controller.manageable_content_for(:body).should == 
+              @contact_controller.manageable_content_for(:body).should ==
                 @contact_body_content.content
             end
             it "should retrieve the correct content for :message" do
-              @contact_controller.manageable_content_for(:message).should == 
+              @contact_controller.manageable_content_for(:message).should ==
                 @contact_message_content.content
             end
             it "should retrieve the correct content for :footer_copyright" do
@@ -95,16 +110,30 @@ describe "The Controller Dsl" do
                 @application_layout_footer_copyright_content.content
             end
             it "should retrieve the correct content for :footer_contact" do
-              @contact_controller.manageable_layout_content_for(:footer_contact).should == 
+              @contact_controller.manageable_layout_content_for(:footer_contact).should ==
                 @application_layout_footer_contact_content.content
             end
+          end
+        end
+
+        context "StaticPagesController" do
+          it "should retrieve the correct content for static/page1 :body" do
+            @static_pages_controller.stub(:params => {:page => "static/page1"})
+            @static_pages_controller.manageable_content_for(:body).should ==
+              @static_page_1_body_content.content
+          end
+
+          it "should retrieve the correct content for static/page2 :body" do
+            @static_pages_controller.stub(:params => {:page => "static/page2"})
+            @static_pages_controller.manageable_content_for(:body).should ==
+              @static_page_2_body_content.content
           end
         end
 
         context "with blog layout" do
           context "Blog::HomeController" do
             it "should retrieve the correct content for :blog_title" do
-              @blogs_home_controller.manageable_layout_content_for(:blog_title).should == 
+              @blogs_home_controller.manageable_layout_content_for(:blog_title).should ==
                 @blog_layout_title_content.content
             end
 
