@@ -1,6 +1,6 @@
 == 0.2.6
 
-* Added support to custom pages
+* Added support for custom pages
 
 == 0.2.5
 
